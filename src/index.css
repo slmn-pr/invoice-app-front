@@ -1,0 +1,10 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+html,
+body {
+  direction: rtl;
+}
+.form-control {
+  @apply space-y-2;
+}
