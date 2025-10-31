@@ -1,7 +1,21 @@
+import { useEffect } from "react";
 import AddInvoiceModal from "../Containers/Invoice/components/AddInvoiceModal";
 import InvoicesTable from "../Containers/Invoice/Table";
+import { getAllInvoices } from "../api/invoices";
 
 export default function InvoicesPage() {
+
+
+
+    useEffect(() => {
+
+        getAllInvoices().then((response) => {
+            console.log("[InvoicesPage] getAllInvoices, result", response);
+        }).catch((error) => {
+            console.log("[InvoicesPage] getAllInvoices, error", error);
+        })
+    }, [])
+
 
     const onAddInvoice = () => {
         // add_invoice_modal

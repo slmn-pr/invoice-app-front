@@ -12,6 +12,7 @@
   "dependencies": {
     "@react-pdf/renderer": "^4.3.1",
     "@tailwindcss/vite": "^4.1.16",
+    "axios": "^1.13.1",
     "culori": "^4.0.2",
     "jspdf": "^3.0.3",
     "lucide-react": "^0.546.0",
