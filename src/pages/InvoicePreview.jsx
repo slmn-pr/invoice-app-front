@@ -1,6 +1,6 @@
-import React, { useRef } from "react";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
+import { useRef } from "react";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import InvoicePDF from "../Containers/Invoice/components/InvoicePDF";
 
 export default function InvoicePreviewPage() {
     const printRef = useRef();
@@ -34,32 +34,6 @@ export default function InvoicePreviewPage() {
         ],
     };
 
-    // تابع خروجی PDF
-    const exportToPDF = async () => {
-        const element = printRef.current;
-        const canvas = await html2canvas(element, { scale: 2, useCORS: true });
-        const imgData = canvas.toDataURL("image/png");
-        const pdf = new jsPDF("p", "mm", "a4");
-
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const imgProps = pdf.getImageProperties(imgData);
-        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-        pdf.save(`${invoice.invoiceNumber}.pdf`);
-    };
-
-    // تابع خروجی تصویر
-    const exportToImage = async () => {
-        const element = printRef.current;
-        const canvas = await html2canvas(element, { scale: 2 });
-        const img = canvas.toDataURL("image/png");
-        const link = document.createElement("a");
-        link.href = img;
-        link.download = `${invoice.invoiceNumber}.png`;
-        link.click();
-    };
-
     const totalAmount = invoice.items.reduce(
         (sum, item) =>
             sum + item.quantity * item.unitPrice * (1 + item.taxRate / 100),
@@ -72,17 +46,24 @@ export default function InvoicePreviewPage() {
             <div className="flex justify-end gap-3 mb-4">
                 <button
                     className="btn btn-outline btn-sm border-[#14b8a6] text-[#14b8a6]"
-                    onClick={exportToImage}
+                // onClick={exportToImage}
                 >
                     خروجی تصویر
                 </button>
-                <button
-                    className="btn btn-sm text-white"
-                    style={{ backgroundColor: "#14b8a6", borderColor: "#14b8a6" }}
-                    onClick={exportToPDF}
+
+                {/* PDF Download */}
+                <PDFDownloadLink
+                    document={<InvoicePDF invoice={invoice} />}
+                    fileName={`invoice-${invoice.invoiceNumber}.pdf`}
                 >
-                    خروجی PDF
-                </button>
+                    {({ loading }) =>
+                        loading ? (
+                            <button className="btn btn-outline btn-primary">در حال آماده‌سازی...</button>
+                        ) : (
+                            <button className="btn btn-primary">دانلود PDF فاکتور</button>
+                        )
+                    }
+                </PDFDownloadLink>
             </div>
 
             <div
