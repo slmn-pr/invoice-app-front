@@ -87,7 +87,7 @@ export default function LoginPage() {
 
                 <p className="text-gray-200 text-center mt-6">
                     حساب کاربری ندارید؟
-                    <Link to="/register" className="text-teal-300 hover:underline">
+                    <Link to="/signup" className="text-teal-300 hover:underline">
                         ثبت‌نام کنید
                     </Link>
                 </p>

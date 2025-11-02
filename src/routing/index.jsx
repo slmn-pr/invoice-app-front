@@ -6,6 +6,7 @@ import InvoicesPage from "../pages/InvoicesPage";
 import InvoicePreviewPage from "../pages/InvoicePreview";
 import ProtectedRoute from "../components/ProtectedRoute";
 import LoginPage from "../pages/LoginPage";
+import SignupPage from "../pages/SignupPage";
 
 const router = createBrowserRouter([
 
@@ -14,10 +15,10 @@ const router = createBrowserRouter([
         path: "/login",
         element: <LoginPage />,
     },
-    // {
-    //     path: "/register",
-    //     element: <RegisterPage />,
-    // },
+    {
+        path: "/signup",
+        element: <SignupPage />,
+    },
 
 
     // Protected route
