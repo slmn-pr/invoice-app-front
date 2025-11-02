@@ -1,9 +1,33 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import PrimaryButton from "../components/buttons/PrimaryButton";
 import SideMenu from "./components/SideMenu";
+import { useAuthStore } from "../store/authStore";
+import { clearAuthCookies } from "../utils/cookies";
 
 export default function DashboardLayout() {
+    const token = useAuthStore((s) => s.token)
+    const logout = useAuthStore((s) => s.logout)
+
+    const navigate = useNavigate()
+
+
+    const handleLogout = () => {
+        console.log("handleLogout click");
+
+
+        // Clear from global state
+        logout()
+
+        // Clear cookie
+        clearAuthCookies()
+
+        // navigate to login
+        navigate('/login')
+
+    }
+
     let userFullname = "سلمان سلیمان پور"
+
 
     return <main className="h-screen w-screen flex">
 
@@ -29,9 +53,9 @@ export default function DashboardLayout() {
                     </div>
 
                     {/* Login or signup button */}
-                    <PrimaryButton>
-                        ورود \ ثبت نام
-                    </PrimaryButton>
+                    {token && <PrimaryButton PrimaryButton onClick={handleLogout}>
+                        خروج
+                    </PrimaryButton>}
 
                 </header>
             </div>
@@ -45,5 +69,5 @@ export default function DashboardLayout() {
 
 
 
-    </main>
+    </main >
 }

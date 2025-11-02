@@ -48,7 +48,7 @@ export default function LoginPage() {
         >
             <div className="bg-white/10 backdrop-blur-lg shadow-xl rounded-2xl w-full max-w-md p-8 border border-white/20">
                 <h1 className="text-3xl font-bold text-white text-center mb-6">
-                    ورود به سیستم مدیریت فاکتورها
+                    ورود به فاکتور‌پلاس
                 </h1>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">

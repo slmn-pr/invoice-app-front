@@ -7,7 +7,7 @@ export const useAuthStore = create(
       user: null,
       token: null,
       login: (data) => set({ user: data.user, token: data.token }),
-      logout: () => set({ user: null, token: null }),
+      logout: () => set((state) => ({ ...state, user: null, token: null })),
       register: (data) => set({ user: data.user, token: data.token }),
     }),
     {
