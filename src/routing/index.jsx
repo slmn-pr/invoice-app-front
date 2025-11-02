@@ -1,24 +1,41 @@
 import { createBrowserRouter } from "react-router-dom";
-import DashboardLayout from "../Layout";
+import DashboardLayout from "../layout";
 import HomePage from "../pages/Home";
-import NotFoundPgae from "../pages/NotFound";
+import NotFoundPage from "../pages/NotFound";
 import InvoicesPage from "../pages/InvoicesPage";
 import InvoicePreviewPage from "../pages/InvoicePreview";
+import ProtectedRoute from "../components/ProtectedRoute";
+import LoginPage from "../pages/LoginPage";
 
 const router = createBrowserRouter([
+
+    // مسیرهای عمومی
     {
-        path: "/",
-        element: <DashboardLayout />,
+        path: "/login",
+        element: <LoginPage />,
+    },
+    // {
+    //     path: "/register",
+    //     element: <RegisterPage />,
+    // },
+
+
+    // Protected route
+    {
+        element: <ProtectedRoute />,
         children: [
-            { index: true, element: <HomePage /> },
-
-            { path: "invoices", element: <InvoicesPage /> },
-            { path: "preview", element: <InvoicePreviewPage /> },
-            { path: "*", element: <NotFoundPgae /> },
-            // { path: "about", element: <About /> },
-
+            {
+                path: "/",
+                element: <DashboardLayout />,
+                children: [
+                    { index: true, element: <HomePage /> },
+                    { path: "invoices", element: <InvoicesPage /> },
+                    { path: "preview", element: <InvoicePreviewPage /> },
+                    { path: "*", element: <NotFoundPage /> },
+                ],
+            },
         ],
-    }
+    },
 ]);
 
 

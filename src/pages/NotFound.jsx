@@ -1,3 +1,3 @@
-export default function NotFoundPgae() {
+export default function NotFoundPage() {
     return <p>Nooooo!</p>
 }
