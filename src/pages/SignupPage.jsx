@@ -1,124 +1,156 @@
-import { useState } from "react";
+import { useForm, FormProvider } from "react-hook-form";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import useSignupRequest from "../hooks/useSignupRequest";
+import toast from "react-hot-toast";
+import { saveAuthToken } from "../utils/cookies";
 
 export default function SignupPage() {
     const navigate = useNavigate();
-    const { register } = useAuthStore();
+    const { register: registerUser } = useAuthStore();
+    const { mutate, error, isPending } = useSignupRequest();
 
-    const [formData, setFormData] = useState({
-        email: "",
-        password: "",
-        firstName: "",
-        lastName: "",
+    const methods = useForm({
+        defaultValues: {
+            email: "",
+            password: "",
+            firstName: "",
+            lastName: "",
+        },
     });
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
 
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
+    const {
+        handleSubmit,
+        register,
+        formState: { errors },
+    } = methods;
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        setError(null);
+    const onSubmit = (formValues) => {
+        mutate(formValues, {
+            onError: (error) => toast.error(error.message),
+            onSuccess: (data) => {
+                console.log("[SignupPage] onSubmit, data:", data);
 
-        try {
-            const res = await fetch("http://localhost:3000/api/auth/register", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData),
-            });
+                saveAuthToken(data.token);
+                registerUser(data);
 
-            const data = await res.json();
-
-            if (!data.success) throw new Error(data.error || "خطا در ثبت‌نام");
-
-            register(data.data);
-            navigate("/");
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
-        }
+                toast.success("ثبت‌نام با موفقیت انجام شد ✅");
+                setTimeout(() => navigate("/"), 1000);
+            },
+        });
     };
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="w-full max-w-md"
-            >
-                <Card className="shadow-lg border-0">
-                    <CardHeader>
-                        <CardTitle className="text-2xl text-center font-bold text-indigo-700">
+            <div className="w-full max-w-md">
+                <div className="card bg-base-100 shadow-xl border border-gray-100">
+                    <div className="card-body">
+                        <h2 className="text-2xl font-bold text-center text-indigo-700 mb-4">
                             ایجاد حساب کاربری
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <form onSubmit={handleSubmit} className="space-y-4">
-                            <div className="grid grid-cols-2 gap-3">
-                                <Input
-                                    name="firstName"
-                                    placeholder="نام"
-                                    value={formData.firstName}
-                                    onChange={handleChange}
-                                    required
-                                />
-                                <Input
-                                    name="lastName"
-                                    placeholder="نام خانوادگی"
-                                    value={formData.lastName}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </div>
+                        </h2>
 
-                            <Input
-                                name="email"
-                                type="email"
-                                placeholder="ایمیل"
-                                value={formData.email}
-                                onChange={handleChange}
-                                required
-                            />
+                        <FormProvider {...methods}>
+                            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                                <div className="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <input
+                                            type="text"
+                                            placeholder="نام"
+                                            {...register("firstName", { required: "نام الزامی است" })}
+                                            className="input input-bordered w-full"
+                                        />
+                                        {errors.firstName && (
+                                            <p className="text-error text-sm mt-1 text-right">
+                                                {errors.firstName.message}
+                                            </p>
+                                        )}
+                                    </div>
 
-                            <Input
-                                name="password"
-                                type="password"
-                                placeholder="رمز عبور"
-                                value={formData.password}
-                                onChange={handleChange}
-                                required
-                            />
+                                    <div>
+                                        <input
+                                            type="text"
+                                            placeholder="نام خانوادگی"
+                                            {...register("lastName", { required: "نام خانوادگی الزامی است" })}
+                                            className="input input-bordered w-full"
+                                        />
+                                        {errors.lastName && (
+                                            <p className="text-error text-sm mt-1 text-right">
+                                                {errors.lastName.message}
+                                            </p>
+                                        )}
+                                    </div>
+                                </div>
 
-                            {error && (
-                                <p className="text-red-500 text-sm text-center">{error}</p>
-                            )}
+                                <div>
+                                    <input
+                                        type="email"
+                                        placeholder="ایمیل"
+                                        {...register("email", {
+                                            required: "ایمیل الزامی است",
+                                            pattern: {
+                                                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                                message: "ایمیل معتبر نیست",
+                                            },
+                                        })}
+                                        className="input input-bordered w-full"
+                                    />
+                                    {errors.email && (
+                                        <p className="text-error text-sm mt-1 text-right">
+                                            {errors.email.message}
+                                        </p>
+                                    )}
+                                </div>
 
-                            <Button
-                                type="submit"
-                                disabled={loading}
-                                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
+                                <div>
+                                    <input
+                                        type="password"
+                                        placeholder="رمز عبور"
+                                        {...register("password", {
+                                            required: "رمز عبور الزامی است",
+                                            minLength: {
+                                                value: 4,
+                                                message: "حداقل ۴ کاراکتر لازم است",
+                                            },
+                                        })}
+                                        className="input input-bordered w-full"
+                                    />
+                                    {errors.password && (
+                                        <p className="text-error text-sm mt-1 text-right">
+                                            {errors.password.message}
+                                        </p>
+                                    )}
+                                </div>
+
+                                {error?.message && (
+                                    <p className="text-error text-sm text-center">{error.message}</p>
+                                )}
+
+                                <button
+                                    type="submit"
+                                    disabled={isPending}
+                                    className="btn btn-primary w-full bg-indigo-600 border-none hover:bg-indigo-700 text-white"
+                                >
+                                    {isPending ? (
+                                        <span className="loading loading-spinner"></span>
+                                    ) : (
+                                        "ثبت‌نام"
+                                    )}
+                                </button>
+                            </form>
+                        </FormProvider>
+
+                        <p className="text-center text-sm text-gray-600 mt-4">
+                            حساب دارید؟{" "}
+                            <Link
+                                to="/login"
+                                className="text-indigo-600 hover:text-indigo-800 font-medium"
                             >
-                                {loading ? "در حال ثبت‌نام..." : "ثبت‌نام"}
-                            </Button>
-
-                            <p className="text-center text-sm text-gray-600 mt-2">
-                                حساب دارید؟{" "}
-                                <Link to="/login" className="text-indigo-600 hover:underline">
-                                    وارد شوید
-                                </Link>
-                            </p>
-                        </form>
-                    </CardContent>
-                </Card>
-            </motion.div>
+                                وارد شوید
+                            </Link>
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
