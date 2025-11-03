@@ -9,5 +9,6 @@ export const saveAuthToken = (token) =>
   });
 
 export const clearAuthCookies = () => cookies.remove("access_token");
+export const getAccessTokenFromCookie = () => cookies.get("access_token");
 
 export default cookies;

@@ -2,10 +2,9 @@ import React from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import InvoiceItemsTable from "./InvoiceItemsTable";
 
-export default function AddInvoiceForm({ onSubmit }) {
+export default function AddInvoiceForm({ onSubmit, customers = [] }) {
     const methods = useForm({
         defaultValues: {
-            invoiceNumber: "",
             issueDate: "",
             dueDate: "",
             customerId: "",
@@ -17,10 +16,12 @@ export default function AddInvoiceForm({ onSubmit }) {
     const { handleSubmit, watch, register } = methods;
 
     const formatCurrency = (value) =>
-        value.toLocaleString("fa-IR", {
-            style: "currency",
-            currency: "IRR",
-        }).replace("ریال", "تومان");
+        value
+            .toLocaleString("fa-IR", {
+                style: "currency",
+                currency: "IRR",
+            })
+            .replace("ریال", "تومان");
 
     const total = watch("items").reduce(
         (sum, item) =>
@@ -39,24 +40,19 @@ export default function AddInvoiceForm({ onSubmit }) {
                 <div className="grid md:grid-cols-2 gap-4">
                     <div className="form-control">
                         <label className="label justify-end">
-                            <span className="label-text text-gray-700">شماره فاکتور</span>
+                            <span className="label-text text-gray-700">مشتری</span>
                         </label>
-                        <input
-                            {...register("invoiceNumber", { required: true })}
-                            className="input input-bordered w-full text-right"
-                            placeholder="مثلاً INV-001"
-                        />
-                    </div>
-
-                    <div className="form-control">
-                        <label className="label justify-end">
-                            <span className="label-text text-gray-700">شناسه مشتری</span>
-                        </label>
-                        <input
-                            {...register("customerId", { required: true })}
-                            className="input input-bordered w-full text-right"
-                            placeholder="کد یا نام مشتری"
-                        />
+                        <select
+                            {...register("customerId", { required: false })}
+                            className="select select-bordered w-full text-right"
+                        >
+                            <option value="">انتخاب مشتری</option>
+                            {customers.map((c) => (
+                                <option key={c.id} value={c.id}>
+                                    {c.name} ({c.email})
+                                </option>
+                            ))}
+                        </select>
                     </div>
 
                     <div className="form-control">
