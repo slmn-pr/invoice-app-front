@@ -1,9 +1,33 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+@font-face {
+  font-family: "Iranyekan";
+  font-style: normal;
+  font-weight: normal;
+  font-weight: 200 700;
+  font-display: swap;
+  src: url("/fonts/iran-yekan/Qs_Iranyekan.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Vazirmatn";
+  font-style: normal;
+  font-weight: normal;
+  font-weight: 200 700;
+  font-display: swap;
+  src: url("/fonts/vazir-matn/Vazirmatn-Reqular.ttf") format("truetype");
+}
+/* 
+@theme {
+  --default-font-family: Iranyekan, Vazirmatn, sans-serif,
+  --font-body: Iranyekan, Vazirmatn, sans-serif;
+} */
+
 html,
 body {
   direction: rtl;
+  font-family: Iranyekan, Vazirmatn, sans-serif;
 }
 .form-control {
   @apply space-y-2;

@@ -11,7 +11,7 @@ import {
 // PDF export font
 Font.register({
     family: "Vazir",
-    src: "/fonts/Vazirmatn-Regular.ttf",
+    src: "/fonts/vazir-matn/Vazirmatn-Regular.ttf",
 });
 
 // Styles
