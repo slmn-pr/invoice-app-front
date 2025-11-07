@@ -1,8 +1,9 @@
 import React from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import InvoiceItemsTable from "./InvoiceItemsTable";
+import SelectCustomerInput from "./form/SelectCustomerInput";
 
-export default function AddInvoiceForm({ onSubmit, customers = [] }) {
+export default function AddInvoiceForm({ onSubmit }) {
     const methods = useForm({
         defaultValues: {
             issueDate: "",
@@ -42,17 +43,7 @@ export default function AddInvoiceForm({ onSubmit, customers = [] }) {
                         <label className="label justify-end">
                             <span className="label-text text-gray-700">مشتری</span>
                         </label>
-                        <select
-                            {...register("customerId", { required: false })}
-                            className="select select-bordered w-full text-right"
-                        >
-                            <option value="">انتخاب مشتری</option>
-                            {customers.map((c) => (
-                                <option key={c.id} value={c.id}>
-                                    {c.name} ({c.email})
-                                </option>
-                            ))}
-                        </select>
+                        <SelectCustomerInput />
                     </div>
 
                     <div className="form-control">

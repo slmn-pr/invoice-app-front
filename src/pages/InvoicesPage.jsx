@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import AddInvoiceModal from "../Containers/Invoice/components/AddInvoiceModal";
+import AddInvoiceModal from "../containers/Invoice/components/AddInvoiceModal";
 import InvoicesTable from "../Containers/Invoice/Table";
 import { getAllInvoices } from "../api/invoices";
 
@@ -8,7 +8,6 @@ export default function InvoicesPage() {
 
 
     useEffect(() => {
-
         getAllInvoices().then((response) => {
             console.log("[InvoicesPage] getAllInvoices, result", response);
         }).catch((error) => {
