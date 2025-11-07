@@ -37,8 +37,9 @@ export default function AddInvoiceForm({ onSubmit }) {
                 className="w-full space-y-6 text-right p-4"
                 dir="rtl"
             >
-                {/* فیلدهای اطلاعات اصلی */}
                 <div className="grid md:grid-cols-2 gap-4">
+
+                    {/* Customer */}
                     <div className="form-control">
                         <label className="label justify-end">
                             <span className="label-text text-gray-700">مشتری</span>
@@ -46,6 +47,7 @@ export default function AddInvoiceForm({ onSubmit }) {
                         <SelectCustomerInput />
                     </div>
 
+                    {/* Issue date */}
                     <div className="form-control">
                         <label className="label justify-end">
                             <span className="label-text text-gray-700">تاریخ صدور</span>
@@ -57,6 +59,8 @@ export default function AddInvoiceForm({ onSubmit }) {
                         />
                     </div>
 
+
+                    {/* Due date */}
                     <div className="form-control">
                         <label className="label justify-end">
                             <span className="label-text text-gray-700">تاریخ سررسید</span>
