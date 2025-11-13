@@ -1,9 +1,13 @@
 import { useNavigate } from "react-router-dom"
-import { Download } from "lucide-react";
+import { Download, LoaderCircle, Trash2 } from "lucide-react";
 import { useMemo } from "react";
+import InvoiceTableCell from "./InvoiceTableCell";
+import useDeleteInvoice from "../../hooks/invoice/useDeleteInvoice";
 
 export default function InvoiceTableBodyRow({ record = {}, page = 1, index = 1 }) {
     const naviagtion = useNavigate()
+
+    const { mutate: onInvoiceDelete, isPending: isDeleting } = useDeleteInvoice()
 
 
 
@@ -21,32 +25,46 @@ export default function InvoiceTableBodyRow({ record = {}, page = 1, index = 1 }
     const onDownloadClick = () => {
         naviagtion('/preview', {
             state: {
-                invoiceID
+                invoiceID: record.id
             }
         })
     }
 
+
+
+
     return <tr>
 
         {/* Index */}
-        <td className="w-20 border border-gray-300 p-2">{invoiceIndexNumber}</td>
+        <InvoiceTableCell className="w-20">{invoiceIndexNumber}</InvoiceTableCell>
 
         {/* Invoice number */}
-        <td className="w-32 border border-gray-300 p-2">{invoiceID}</td>
+        <InvoiceTableCell className="w-40">{invoiceID}</InvoiceTableCell>
 
         {/* Customer name (full name) */}
-        <td className="w-80 border border-gray-300 p-2">سلمان سلیمان پور</td>
+        <InvoiceTableCell className="w-60">{record?.customer.name}</InvoiceTableCell>
+
+        <InvoiceTableCell className="w-40">{record?.issueDate}</InvoiceTableCell>
+        <InvoiceTableCell className="w-40">{record?.dueDate} </InvoiceTableCell>
 
         {/* Status */}
-        <td className="w-32 border border-gray-300 p-2">{record?.status || "نا مشخص"}</td>
+        <InvoiceTableCell className="w-32">{record?.status || "نامشخص"}</InvoiceTableCell>
 
         {/* Download button */}
-        <td className="w-32 border border-gray-300 p-2">
+        <InvoiceTableCell className="w-32">
 
-            <button className="btn-sm btn btn-circle btn-info" onClick={onDownloadClick}>
-                <Download color="#fff" size={18} />
-            </button>
+            <div className="space-x-1">
+                <button className="btn-sm btn btn-circle btn-info" onClick={onDownloadClick}>
+                    <Download color="#fff" size={18} />
+                </button>
 
-        </td>
+                <button className="btn-sm btn btn-circle btn-error" onClick={() => onInvoiceDelete(record.id)}>
+                    {isDeleting && <LoaderCircle size={18} color="#fff" className="animate-spin" />}
+
+                    {!isDeleting && <Trash2 color="#fff" size={18}  />}
+                </button>
+
+            </div>
+        </InvoiceTableCell>
     </tr>
 }

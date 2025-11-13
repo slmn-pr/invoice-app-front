@@ -1,7 +1,9 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { insertInvoice } from "../../api/invoices";
 
 export default function useInsertInvoice() {
+  const queryClient = useQueryClient();
+
   const onInsertInvoice = async (invoice) => {
     console.log("[AddInvoiceModal] insertInvoice", invoice);
 
@@ -24,5 +26,8 @@ export default function useInsertInvoice() {
   return useMutation({
     mutationKey: ["insertInvoice"],
     mutationFn: onInsertInvoice,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["fetchPaginateInvoices"]);
+    },
   });
 }

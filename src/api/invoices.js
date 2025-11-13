@@ -18,3 +18,7 @@ export const getAllInvoices = () => {
 export const insertInvoice = (invoice = {}) => {
   return userReq.post("/invoices", invoice);
 };
+
+export const deleteInvoiceReq = (invoiceID) => {
+  return userReq.delete(`/invoices/${invoiceID}`);
+};
