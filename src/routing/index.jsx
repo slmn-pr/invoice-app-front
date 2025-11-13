@@ -31,7 +31,7 @@ const router = createBrowserRouter([
                 children: [
                     { index: true, element: <HomePage /> },
                     { path: "invoices", element: <InvoicesPage /> },
-                    { path: "preview", element: <InvoicePreviewPage /> },
+                    { path: "preview/:id", element: <InvoicePreviewPage /> },
                     { path: "*", element: <NotFoundPage /> },
                 ],
             },

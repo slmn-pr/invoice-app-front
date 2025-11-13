@@ -22,3 +22,7 @@ export const insertInvoice = (invoice = {}) => {
 export const deleteInvoiceReq = (invoiceID) => {
   return userReq.delete(`/invoices/${invoiceID}`);
 };
+
+export const getInvoiceDetailReq = (id) => {
+  return userReq.get(`/invoices/${id}`);
+};

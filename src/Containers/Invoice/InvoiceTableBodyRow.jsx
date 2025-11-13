@@ -3,6 +3,7 @@ import { Download, LoaderCircle, Trash2 } from "lucide-react";
 import { useMemo } from "react";
 import InvoiceTableCell from "./InvoiceTableCell";
 import useDeleteInvoice from "../../hooks/invoice/useDeleteInvoice";
+import { sanitizeInvoiceID } from "../../utils";
 
 export default function InvoiceTableBodyRow({ record = {}, page = 1, index = 1 }) {
     const naviagtion = useNavigate()
@@ -12,21 +13,12 @@ export default function InvoiceTableBodyRow({ record = {}, page = 1, index = 1 }
 
 
     const invoiceIndexNumber = useMemo(() => page * index, [page, index]);
-    const invoiceID = useMemo(() => {
-        if (!record?.id || typeof record.id != "string") return null;
-
-        let lastSectionOfUUID = record.id.split("-").at(-1)
-        let newID = `INV-${lastSectionOfUUID.toUpperCase()}`
-        return newID;
-
-    }, [record.id])
+    const invoiceID = useMemo(() => sanitizeInvoiceID(record.id), [record.id])
 
 
     const onDownloadClick = () => {
-        naviagtion('/preview', {
-            state: {
-                invoiceID: record.id
-            }
+        naviagtion(`/preview/${record.id}`, {
+            replace: false
         })
     }
 
@@ -61,7 +53,7 @@ export default function InvoiceTableBodyRow({ record = {}, page = 1, index = 1 }
                 <button className="btn-sm btn btn-circle btn-error" onClick={() => onInvoiceDelete(record.id)}>
                     {isDeleting && <LoaderCircle size={18} color="#fff" className="animate-spin" />}
 
-                    {!isDeleting && <Trash2 color="#fff" size={18}  />}
+                    {!isDeleting && <Trash2 color="#fff" size={18} />}
                 </button>
 
             </div>

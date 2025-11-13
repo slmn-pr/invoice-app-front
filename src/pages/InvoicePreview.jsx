@@ -1,38 +1,24 @@
 import { useRef } from "react";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import InvoicePDF from "../Containers/Invoice/components/InvoicePDF";
+import useFetchInvoiceDetail from "../hooks/invoice/useFetchInvoiceDetail";
+import { useParams } from "react-router-dom";
+import { sanitizeCustomerID, sanitizeInvoiceID } from "../utils";
 
 export default function InvoicePreviewPage() {
     const printRef = useRef();
 
-    // داده‌های تستی (mock)
-    const invoice = {
-        invoiceNumber: "INV-2025-001",
-        issueDate: "2025-10-23",
-        dueDate: "2025-11-05",
-        customerId: "CUST-203",
-        status: "پرداخت شده",
-        items: [
-            {
-                description: "طراحی رابط کاربری",
-                quantity: 1,
-                unitPrice: 750000,
-                taxRate: 9,
-            },
-            {
-                description: "توسعه بک‌اند",
-                quantity: 2,
-                unitPrice: 500000,
-                taxRate: 9,
-            },
-            {
-                description: "پشتیبانی و نگهداری سیستم",
-                quantity: 1,
-                unitPrice: 300000,
-                taxRate: 0,
-            },
-        ],
-    };
+    const { id } = useParams()
+    console.log("[InvoicePreviewPage] state", id);
+
+
+    const { data: invoice = { items: [] }, isLoading } = useFetchInvoiceDetail(id)
+
+
+    const invoiceID = sanitizeInvoiceID(id)
+    const customerID = sanitizeCustomerID(invoice?.customerId)
+
+
 
     const totalAmount = invoice.items.reduce(
         (sum, item) =>
@@ -44,17 +30,17 @@ export default function InvoicePreviewPage() {
         <div className="w-full text-right p-6 min-h-screen bg-[#f9fafb]" dir="rtl">
             {/* دکمه‌های خروجی */}
             <div className="flex justify-end gap-3 mb-4">
-                <button
+                {/* <button
                     className="btn btn-outline btn-sm border-[#14b8a6] text-[#14b8a6]"
                 // onClick={exportToImage}
                 >
                     خروجی تصویر
-                </button>
+                </button> */}
 
                 {/* PDF Download */}
                 <PDFDownloadLink
                     document={<InvoicePDF invoice={invoice} />}
-                    fileName={`invoice-${invoice.invoiceNumber}.pdf`}
+                    fileName={`invoice-${invoiceID}.pdf`}
                 >
                     {({ loading }) =>
                         loading ? (
@@ -85,10 +71,10 @@ export default function InvoicePreviewPage() {
                     </div>
                     <div className="text-left text-sm">
                         <p className="font-semibold text-gray-700">
-                            شماره فاکتور: {invoice.invoiceNumber}
+                            شماره فاکتور: {invoiceID}
                         </p>
-                        <p className="text-gray-500">تاریخ صدور: {invoice.issueDate}</p>
-                        <p className="text-gray-500">تاریخ سررسید: {invoice.dueDate}</p>
+                        <p className="text-gray-500">تاریخ صدور: {invoice?.issueDate}</p>
+                        <p className="text-gray-500">تاریخ سررسید: {invoice?.dueDate}</p>
                     </div>
                 </div>
 
@@ -97,7 +83,7 @@ export default function InvoicePreviewPage() {
                     <div>
                         <p>
                             <span className="font-semibold">شناسه مشتری:</span>{" "}
-                            {invoice.customerId}
+                            {customerID}
                         </p>
                     </div>
                     <div>
@@ -107,14 +93,14 @@ export default function InvoicePreviewPage() {
                                 className="badge text-white"
                                 style={{
                                     backgroundColor:
-                                        invoice.status === "پرداخت شده"
+                                        invoice?.status === "پرداخت شده"
                                             ? "#22c55e"
-                                            : invoice.status === "ارسال شده"
+                                            : invoice?.status === "ارسال شده"
                                                 ? "#0284c7"
                                                 : "#9ca3af",
                                 }}
                             >
-                                {invoice.status}
+                                {invoice?.status}
                             </span>
                         </p>
                     </div>
@@ -133,18 +119,27 @@ export default function InvoicePreviewPage() {
                             </tr>
                         </thead>
                         <tbody className="text-center">
-                            {invoice.items.map((item, i) => (
+                            {invoice?.items.map((item, i) => (
                                 <tr key={i}>
+                                    {/* Description */}
                                     <td>{item.description}</td>
+
+                                    {/* Quantity */}
                                     <td>{item.quantity}</td>
-                                    <td>{item.unitPrice.toLocaleString("fa-IR")}</td>
+
+                                    {/* Unite price */}
+                                    <td>{item?.unitPrice?.toLocaleString("fa-IR")}</td>
+
+                                    {/* Tax rate */}
                                     <td>{item.taxRate}</td>
+
+                                    {/* Item Total price */}
                                     <td>
                                         {(
                                             item.quantity *
                                             item.unitPrice *
                                             (1 + item.taxRate / 100)
-                                        ).toLocaleString("fa-IR")}
+                                        )?.toLocaleString("fa-IR")}
                                     </td>
                                 </tr>
                             ))}
@@ -159,7 +154,7 @@ export default function InvoicePreviewPage() {
                 >
                     <span className="font-bold text-gray-700">جمع کل:</span>
                     <span className="font-bold" style={{ color: "#14b8a6" }}>
-                        {totalAmount.toLocaleString("fa-IR")} تومان
+                        {totalAmount?.toLocaleString("fa-IR")} تومان
                     </span>
                 </div>
 
