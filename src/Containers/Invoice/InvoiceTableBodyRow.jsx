@@ -33,11 +33,12 @@ export default function InvoiceTableBodyRow({ record = {}, page = 1, index = 1 }
         {/* Invoice number */}
         <InvoiceTableCell className="w-40">{invoiceID}</InvoiceTableCell>
 
+        {/* Owner */}
+        <InvoiceTableCell className="w-60">{record?.owner.firstName + " " + record?.owner.lastName}</InvoiceTableCell>
+
         {/* Customer name (full name) */}
         <InvoiceTableCell className="w-60">{record?.customer.name}</InvoiceTableCell>
 
-        <InvoiceTableCell className="w-40">{record?.issueDate}</InvoiceTableCell>
-        <InvoiceTableCell className="w-40">{record?.dueDate} </InvoiceTableCell>
 
         {/* Status */}
         <InvoiceTableCell className="w-32">{record?.status || "نامشخص"}</InvoiceTableCell>
