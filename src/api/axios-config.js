@@ -16,4 +16,14 @@ userReq.interceptors.request.use((req) => {
   // console.log("userReq is used", args);
 });
 
+userReq.interceptors.response.use((response) => {
+  console.log("[userReq.interceptors.response.use] response", response);
+
+  if (response.status === 401) {
+    window.location.replace("/login");
+  }
+
+  return response;
+});
+
 export default userReq;
