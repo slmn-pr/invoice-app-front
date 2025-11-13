@@ -7,6 +7,7 @@ import {
     StyleSheet,
     Font,
 } from "@react-pdf/renderer";
+import { sanitizeCustomerID, sanitizeInvoiceID } from "../../../utils";
 
 // PDF export font
 Font.register({
@@ -20,6 +21,7 @@ const styles = StyleSheet.create({
         padding: 32,
         fontFamily: "Vazir",
         direction: "rtl",
+        textAlign: 'right',
         fontSize: 11,
         color: "#333",
     },
@@ -29,18 +31,22 @@ const styles = StyleSheet.create({
         marginBottom: 12,
         flexDirection: "row",
         justifyContent: "space-between",
+
     },
     title: {
         fontSize: 18,
         color: "#00c7b7",
         fontWeight: "bold",
+        textAlign: 'right',
     },
     subtitle: {
         fontSize: 10,
         color: "#777",
+        textAlign: 'right',
     },
     section: {
         marginVertical: 6,
+        textAlign: "right"
     },
     table: {
         display: "table",
@@ -83,6 +89,8 @@ const styles = StyleSheet.create({
 });
 
 const InvoicePDF = ({ invoice }) => {
+    const customerID = sanitizeCustomerID(invoice?.customerId)
+    const invoiceID = sanitizeInvoiceID(invoice?.id)
     const total = invoice.items.reduce(
         (sum, item) => sum + item.quantity * item.unitPrice * (1 + item.taxRate / 100),
         0
@@ -97,18 +105,27 @@ const InvoicePDF = ({ invoice }) => {
                         <Text style={styles.title}>فاکتور فروش</Text>
                         <Text style={styles.subtitle}>سیستم مدیریت فاکتور (نسخه تستی)</Text>
                     </View>
-                    <View>
-                        <Text>شماره فاکتور: {invoice.invoiceNumber}</Text>
+                    <View style={{
+                        textAlign: 'right',
+                        
+                    }}>
+                        <Text>
+                            {invoiceID}
+                            :شماره فاکتور
+                        </Text>
                         <Text>تاریخ صدور: {invoice.issueDate}</Text>
                         <Text>تاریخ سررسید: {invoice.dueDate}</Text>
                     </View>
                 </View>
 
                 {/* Customer info */}
-                <View style={styles.section}>
-                    <Text>شناسه مشتری: {invoice.customerId}</Text>
+                <View style={styles.section} >
                     <Text>
-                        وضعیت فاکتور:{" "}
+                        {customerID}
+                        :شناسه مشتری
+                    </Text>
+                    <Text>
+                        وضعیت فاکتور:
                         {invoice.status === "پرداخت شده" ? "✅ پرداخت شده" : invoice.status}
                     </Text>
                 </View>
