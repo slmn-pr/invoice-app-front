@@ -1,19 +1,14 @@
-import { useEffect } from "react";
+import { Loader, LoaderPinwheel } from "lucide-react";
 import AddInvoiceModal from "../containers/Invoice/components/AddInvoiceModal";
 import InvoicesTable from "../Containers/Invoice/Table";
-import { getAllInvoices } from "../api/invoices";
+import useFetchPaginateInvoices from "../hooks/invoice/useFetchPaginateInvoices";
+import PageLayuot from "../layout/PageLayout";
 
 export default function InvoicesPage() {
 
 
+    const { data, isLoading } = useFetchPaginateInvoices()
 
-    useEffect(() => {
-        getAllInvoices().then((response) => {
-            console.log("[InvoicesPage] getAllInvoices, result", response);
-        }).catch((error) => {
-            console.log("[InvoicesPage] getAllInvoices, error", error);
-        })
-    }, [])
 
 
     const onAddInvoice = () => {
@@ -21,24 +16,23 @@ export default function InvoicesPage() {
         document.getElementById('add_invoice_modal').showModal()
     }
 
-    return <div className="space-y-5">
+    return <PageLayuot
+        pageTitle="مدیریت فاکتور ها"
+        buttonSlot={<button onClick={onAddInvoice} className="bg-white text-gray-900 p-3 rounded cursor-pointer">صدور فاکتور جدید</button>} >
 
-        {/* Hader and page title */}
-        <div className="w-full h-20 bg-teal-400 flex items-center justify-between rounded px-5">
-            <h2 className="font-bold text-3xl text-white ">
-                مدیریت فاکتور ها
-            </h2>
+        {isLoading && <div className="w-full flex flex-col justify-center items-center mt-20">
+            <Loader size={100} className="animate-spin" />
 
-            <button onClick={onAddInvoice} className="bg-white text-gray-900 p-3 rounded cursor-pointer">صدور فاکتور جدید</button>
-        </div>
-
-        {/* Action buttons */}
+            <span className="text-3xl font-semibold text-gray-500">در حال بارگیری داده ها</span></div>}
 
 
-        {/* Table */}
-        <InvoicesTable />
+        {!isLoading && <>
+            {/* Table */}
+            <InvoicesTable records={data?.items} meta={data?.meta} />
 
-        {/* Modal */}
-        <AddInvoiceModal />
-    </div>
+            {/* Modal */}
+            <AddInvoiceModal /></>}
+
+
+    </PageLayuot>
 }

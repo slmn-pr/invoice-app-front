@@ -1,18 +1,10 @@
-import { Download } from "lucide-react";
 import { INVOICE_TABLE_HEADERS } from "./consts";
-import { useNavigate } from "react-router-dom";
+import InvoiceTableBodyRow from "./InvoiceTableBodyRow";
 
-export default function InvoicesTable() {
+export default function InvoicesTable({ records = [], meta = { "total": 0, "page": 1, "limit": 10, "totalPages": 1 } }) {
 
-    const naviagtion = useNavigate()
 
-    const onDownloadClick = () => {
-        naviagtion('/preview', {
-            state: {
-                invoiceID: 11
-            }
-        })
-    }
+
 
     return <table className="w-full">
         <thead>
@@ -22,19 +14,12 @@ export default function InvoicesTable() {
         </thead>
 
         <tbody>
-            <tr>
-                <td className="w-20 border border-gray-300 p-2">1</td>
-                <td className="w-32 border border-gray-300 p-2">111</td>
-                <td className="w-80 border border-gray-300 p-2">سلمان سلیمان پور</td>
-                <td className="w-32 border border-gray-300 p-2">پرداخت شده</td>
-                <td className="w-32 border border-gray-300 p-2">
 
-                    <button className="btn-sm btn btn-circle btn-info" onClick={onDownloadClick}>
-                        <Download color="#fff" size={18} />
-                    </button>
+            {
+                records.map((record, index) => <InvoiceTableBodyRow record={record} index={index + 1} page={meta.page} />)
+            }
 
-                </td>
-            </tr>
+
         </tbody>
 
     </table>
