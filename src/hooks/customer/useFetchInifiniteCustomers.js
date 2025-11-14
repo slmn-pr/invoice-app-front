@@ -3,9 +3,12 @@ import { fetchCusomersReq } from "../../api/customers";
 
 const DEFAULT_LIMIT = 10;
 
-export default function useFetchCustomers() {
+export default function useFetchInfiniteCustomers() {
   const fetchCustomers = async ({ pageParam = 1 }) => {
-    console.log("[useFetchCustomers] fetchCustomers, pageParam:", pageParam);
+    console.log(
+      "[useFetchInfiniteCustomers] fetchCustomers, pageParam:",
+      pageParam
+    );
 
     const { data } = await fetchCusomersReq({
       limit: DEFAULT_LIMIT,
@@ -23,7 +26,7 @@ export default function useFetchCustomers() {
   };
 
   return useInfiniteQuery({
-    queryKey: ["fetchCustomers"],
+    queryKey: ["fetch-inifinite-customers"],
     queryFn: fetchCustomers,
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {

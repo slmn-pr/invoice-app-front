@@ -1,12 +1,12 @@
-import { INVOICE_TABLE_HEADERS } from "./consts";
-import InvoiceTableBodyRow from "./InvoiceTableBodyRow";
+import { CUSTOMERS_TABLE_HEADERS } from "./consts"
+import CustomerTableBodyRow from "./CustomerTableBodyRow";
 
 export default function InvoicesTable({ records = [], meta = { "total": 0, "page": 1, "limit": 10, "totalPages": 1 } }) {
 
     return <table className="w-full">
         <thead>
             <tr>
-                {INVOICE_TABLE_HEADERS.map((item, index) =>
+                {CUSTOMERS_TABLE_HEADERS.map((item, index) =>
                 (
                     <th
                         key={`${item}-${index}`}
@@ -21,7 +21,7 @@ export default function InvoicesTable({ records = [], meta = { "total": 0, "page
 
             {
                 records.map((record, index) =>
-                    <InvoiceTableBodyRow record={record} index={index + 1} page={meta.page} />
+                    <CustomerTableBodyRow record={record} index={index + 1} page={meta.page} />
                 )
             }
 

@@ -7,6 +7,7 @@ import InvoicePreviewPage from "../pages/InvoicePreview";
 import ProtectedRoute from "../components/ProtectedRoute";
 import LoginPage from "../pages/LoginPage";
 import SignupPage from "../pages/SignupPage";
+import CustomersPage from "../pages/CustomersPage";
 
 const router = createBrowserRouter([
 
@@ -32,6 +33,13 @@ const router = createBrowserRouter([
                     { index: true, element: <HomePage /> },
                     { path: "invoices", element: <InvoicesPage /> },
                     { path: "preview/:id", element: <InvoicePreviewPage /> },
+
+                    // Customer
+                    {
+                        path: 'customers', element: <CustomersPage />
+                    },
+
+                    // 404
                     { path: "*", element: <NotFoundPage /> },
                 ],
             },
