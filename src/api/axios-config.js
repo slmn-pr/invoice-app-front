@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getAccessTokenFromCookie } from "../utils/cookies";
+import { getAccessTokenFromCookie, clearAuthCookies } from "../utils/cookies";
 
 const API_BASE_URL = "http://localhost:4000/api";
 
@@ -7,23 +7,33 @@ const userReq = axios.create({
   baseURL: API_BASE_URL,
 });
 
+// Request Interceptor
 userReq.interceptors.request.use((req) => {
-  let accessToken = getAccessTokenFromCookie();
+  const accessToken = getAccessTokenFromCookie();
 
-  req.headers.Authorization = `Brear ${accessToken}`;
-
-  return req;
-  // console.log("userReq is used", args);
-});
-
-userReq.interceptors.response.use((response) => {
-  console.log("[userReq.interceptors.response.use] response", response);
-
-  if (response.status === 401) {
-    window.location.replace("/login");
+  if (accessToken) {
+    req.headers.Authorization = `Bearer ${accessToken}`;
   }
 
-  return response;
+  return req;
 });
+
+// Response Interceptor
+userReq.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    console.log("[userReq.interceptors.response.use] error", error);
+
+    if (error.response && error.response.status === 401) {
+      clearAuthCookies();
+
+      window.location.replace("/login");
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 export default userReq;

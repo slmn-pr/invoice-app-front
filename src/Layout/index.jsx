@@ -2,7 +2,8 @@ import { Outlet, useNavigate } from "react-router-dom";
 import PrimaryButton from "../components/buttons/PrimaryButton";
 import SideMenu from "./components/SideMenu";
 import { useAuthStore } from "../store/authStore";
-import { clearAuthCookies } from "../utils/cookies";
+import cookies, { clearAuthCookies } from "../utils/cookies";
+import { useCallback, useEffect } from "react";
 
 export default function DashboardLayout() {
     const token = useAuthStore((s) => s.token)
@@ -11,10 +12,8 @@ export default function DashboardLayout() {
     const navigate = useNavigate()
 
 
-    const handleLogout = () => {
+    const handleLogout = useCallback(() => {
         console.log("handleLogout click");
-
-
         // Clear from global state
         logout()
 
@@ -23,10 +22,22 @@ export default function DashboardLayout() {
 
         // navigate to login
         navigate('/login')
-
-    }
+    }, [logout, navigate])
 
     let userFullname = "سلمان سلیمان پور"
+
+
+    // Check if cookie edited -> logout
+    useEffect(() => {
+        const unsubscribe = cookies.addChangeListener(() => {
+            console.log("cookie change detected → logout");
+            handleLogout();
+        });
+
+        return () => {
+            cookies.removeChangeListener(unsubscribe)
+        };
+    }, [handleLogout]);
 
 
     return <main className="h-screen w-screen flex">
