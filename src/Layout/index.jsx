@@ -2,12 +2,13 @@ import { Outlet, useNavigate } from "react-router-dom";
 import PrimaryButton from "../components/buttons/PrimaryButton";
 import SideMenu from "./components/SideMenu";
 import { useAuthStore } from "../store/authStore";
-import cookies, { clearAuthCookies } from "../utils/cookies";
-import { useCallback, useEffect } from "react";
+import { clearAuthCookies } from "../utils/cookies";
+import { useCallback } from "react";
 
 export default function DashboardLayout() {
     const token = useAuthStore((s) => s.token)
     const logout = useAuthStore((s) => s.logout)
+    const user = useAuthStore((s) => s.user)
 
     const navigate = useNavigate()
 
@@ -23,8 +24,6 @@ export default function DashboardLayout() {
         // navigate to login
         navigate('/login')
     }, [logout, navigate])
-
-    let userFullname = "سلمان سلیمان پور"
 
 
     // Check if cookie edited -> logout
@@ -56,9 +55,12 @@ export default function DashboardLayout() {
                     {/* User info */}
                     <div className="flex items-center space-x-1 text-gray-500">
 
-                        <div className="size-10 rounded-full border border-gray-400 flex justify-center items-center font-bold">S</div>
-                        <span className="font-medium text-lg  ">
-                            {userFullname}، خوش  آمدید
+                        <div className="size-10 rounded-full border border-gray-400 flex justify-center items-center font-bold text-2xl bg-teal-700 text-white border-none">{String(user.email).at(0)}</div>
+                        <span className="font-medium text-lg space-x-1">
+                            <span className="font-bold">
+                                {user.email}
+                            </span>
+                            <span>، خوش آمدید</span>
 
                         </span>
                     </div>
