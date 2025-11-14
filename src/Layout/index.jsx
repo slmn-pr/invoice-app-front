@@ -28,16 +28,16 @@ export default function DashboardLayout() {
 
 
     // Check if cookie edited -> logout
-    useEffect(() => {
-        const unsubscribe = cookies.addChangeListener(() => {
-            console.log("cookie change detected → logout");
-            handleLogout();
-        });
+    // useEffect(() => {
+    //     const unsubscribe = cookies.addChangeListener(() => {
+    //         console.log("cookie change detected → logout");
+    //         handleLogout();
+    //     });
 
-        return () => {
-            cookies.removeChangeListener(unsubscribe)
-        };
-    }, [handleLogout]);
+    //     return () => {
+    //         cookies.removeChangeListener(unsubscribe)
+    //     };
+    // }, [handleLogout]);
 
 
     return <main className="h-screen w-screen flex">

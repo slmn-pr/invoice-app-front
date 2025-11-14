@@ -32,3 +32,11 @@ body {
 .form-control {
   @apply space-y-2;
 }
+
+.label {
+  @apply flex flex-col items-start;
+}
+
+.form-control .input {
+  @apply w-full text-right;
+}

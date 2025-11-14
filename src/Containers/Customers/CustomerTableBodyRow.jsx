@@ -1,12 +1,15 @@
 import { useMemo } from "react";
 import InvoiceTableCell from "./CustomerTableCell";
 import { sanitizeCustomerID } from "../../utils";
-import { Trash2 } from "lucide-react";
+import { LoaderCircle, Trash2 } from "lucide-react";
+import useDeleteCustomer from "../../hooks/customer/useDeleteCustomer";
 
 export default function CustomerTableBodyRow({ record = {}, page = 1, index = 1 }) {
 
     const invoiceIndexNumber = useMemo(() => page * index, [page, index]);
     const customerID = useMemo(() => sanitizeCustomerID(record.id), [record.id])
+
+    const { mutate: onDelete, isPending } = useDeleteCustomer()
 
 
     return <tr>
@@ -29,8 +32,9 @@ export default function CustomerTableBodyRow({ record = {}, page = 1, index = 1 
         {/* Buttons */}
         <InvoiceTableCell className="w-32">
             <div className="space-x-1">
-                <button className="btn-sm btn btn-circle btn-error" >
-                    <Trash2 color="#fff" size={18} />
+                <button className="btn-sm btn btn-circle btn-error" onClick={() => onDelete(record.id)}  >
+                    {isPending && <LoaderCircle color="#fff" size={18} />}
+                    {!isPending && <Trash2 color="#fff" size={18} />}
                 </button>
             </div>
         </InvoiceTableCell>

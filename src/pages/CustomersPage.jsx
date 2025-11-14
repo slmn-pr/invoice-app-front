@@ -4,6 +4,7 @@ import InvoicesTable from "../Containers/Invoice/Table";
 import PageLayuot from "../layout/PageLayout";
 import useFetchPaginateCustomers from "../hooks/customer/useFetchPaginateCustomers";
 import CustomersTable from "../containers/Customers/CustomerTable";
+import AddCustomerModal from "../containers/Customers/Modal/AddCustomerModal";
 
 export default function CustomersPage() {
 
@@ -19,9 +20,9 @@ export default function CustomersPage() {
 
     return <PageLayuot
         pageTitle="مدیریت مشتریان"
-        buttonSlot={<button onClick={onAddInvoice} className="bg-white text-gray-900 p-3 rounded cursor-pointer">
-            افرودن مشتری جدید
-        </button>} >
+        buttonSlot={
+            <AddCustomerModal buttonContent="افزودن مشتری" />
+        } >
 
         {isLoading && <div className="w-full flex flex-col justify-center items-center mt-20">
             <Loader size={100} className="animate-spin" />
