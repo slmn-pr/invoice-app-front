@@ -19,6 +19,16 @@ export default function AddCustomerModal({ buttonContent = "Open modal" }) {
 
     const { isPending, mutate } = useInsertCustomer()
 
+    function handleMuatate(values) {
+        mutate(values, {
+            onSuccess: () => {
+                onCloseModal();
+            }
+        })
+
+
+    }
+
     return <>
         {/* Open the modal using document.getElementById('ID').showModal() method */}
         <button className="btn" onClick={() => document.getElementById('add_customer_modal').showModal()}>{buttonContent}</button>
@@ -29,7 +39,7 @@ export default function AddCustomerModal({ buttonContent = "Open modal" }) {
                     افزودن مشتری جدید
                 </h2>
                 <FormProvider {...methods}>
-                    <AddCustomerForm onSubmit={mutate} onClose={onCloseModal} isPending={isPending} />
+                    <AddCustomerForm onSubmit={handleMuatate} onClose={onCloseModal} isPending={isPending} />
                 </FormProvider>
             </div>
 

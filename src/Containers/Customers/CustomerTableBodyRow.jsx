@@ -3,6 +3,7 @@ import InvoiceTableCell from "./CustomerTableCell";
 import { sanitizeCustomerID } from "../../utils";
 import { LoaderCircle, Trash2 } from "lucide-react";
 import useDeleteCustomer from "../../hooks/customer/useDeleteCustomer";
+import EditCustomerModal from "./Modal/EditCustomerModal";
 
 export default function CustomerTableBodyRow({ record = {}, page = 1, index = 1 }) {
 
@@ -36,6 +37,9 @@ export default function CustomerTableBodyRow({ record = {}, page = 1, index = 1 
                     {isPending && <LoaderCircle color="#fff" size={18} />}
                     {!isPending && <Trash2 color="#fff" size={18} />}
                 </button>
+
+
+                <EditCustomerModal id={record.id} />
             </div>
         </InvoiceTableCell>
     </tr>

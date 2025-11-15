@@ -11,3 +11,11 @@ export const insertCusomerReq = (payload) => {
 export const deleteCusomerReq = (id) => {
   return userReq.delete(`/customers/${id}`);
 };
+
+export const getCustomerInfoReq = (id) => {
+  return userReq.get(`/customers/${id}`);
+};
+
+export const editCustomerInfoReq = (id, payload) => {
+  return userReq.put(`/customers/${id}`, payload);
+};

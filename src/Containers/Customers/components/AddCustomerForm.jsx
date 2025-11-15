@@ -41,7 +41,7 @@ export default function AddCustomerForm({ onSubmit, onClose, isPending = false }
 
             <div className="flex justify-end mt-6 gap-x-2">
                 <button
-                    type="submit"
+                    type="button"
                     disabled={isPending}
                     className="btn bg-red-500 hover:bg-red-600 text-white px-8"
                     onClick={onClose}
