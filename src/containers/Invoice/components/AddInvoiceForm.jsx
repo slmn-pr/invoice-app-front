@@ -1,20 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import InvoiceItemsTable from "./InvoiceItemsTable";
 import SelectCustomerInput from "./form/SelectCustomerInput";
 
-export default function AddInvoiceForm({ onSubmit }) {
+export default function AddInvoiceForm({ onSubmit, onClose, isPending = false, submitText, defaultValues ={
+    issueDate: "",
+    dueDate: "",
+    customerId: "",
+    status: "پیش‌نویس",
+    items: [{ description: "", quantity: 1, unitPrice: 0, taxRate: 0 }],
+} }) {
     const methods = useForm({
-        defaultValues: {
-            issueDate: "",
-            dueDate: "",
-            customerId: "",
-            status: "پیش‌نویس",
-            items: [{ description: "", quantity: 1, unitPrice: 0, taxRate: 0 }],
-        },
+        defaultValues: defaultValues
     });
 
-    const { handleSubmit, watch, register } = methods;
+    const { handleSubmit, watch, register, reset } = methods;
+
+    // Reset form when defaultValues change (for edit mode)
+    // Only reset if defaultValues has an id (indicating it's invoice data from API)
+    useEffect(() => {
+        if (defaultValues?.id) {
+            reset({
+                customerId: defaultValues.customerId || "",
+                issueDate: defaultValues.issueDate || "",
+                dueDate: defaultValues.dueDate || "",
+                status: defaultValues.status || "پیش‌نویس",
+                items: defaultValues.items && Array.isArray(defaultValues.items) 
+                    ? defaultValues.items 
+                    : [{ description: "", quantity: 1, unitPrice: 0, taxRate: 0 }],
+            });
+        }
+    }, [defaultValues?.id, reset]);
 
     const formatCurrency = (value) =>
         value
@@ -107,12 +123,23 @@ export default function AddInvoiceForm({ onSubmit }) {
                 </div>
 
                 {/* دکمه ارسال */}
-                <div className="flex justify-end mt-6">
+                <div className="flex justify-end mt-6 gap-x-2">
+                    {onClose && (
+                        <button
+                            type="button"
+                            disabled={isPending}
+                            onClick={onClose}
+                            className="btn bg-red-500 hover:bg-red-600 text-white px-8"
+                        >
+                            انصراف
+                        </button>
+                    )}
                     <button
                         type="submit"
+                        disabled={isPending}
                         className="btn bg-teal-500 hover:bg-teal-600 text-white px-8"
                     >
-                        ثبت فاکتور
+                        {submitText || "ثبت فاکتور"}
                     </button>
                 </div>
             </form>

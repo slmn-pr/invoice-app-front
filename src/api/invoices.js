@@ -26,3 +26,7 @@ export const deleteInvoiceReq = (invoiceID) => {
 export const getInvoiceDetailReq = (id) => {
   return userReq.get(`/invoices/${id}`);
 };
+
+export const updateInvoice = (invoiceID, invoice = {}) => {
+  return userReq.put(`/invoices/${invoiceID}`, invoice);
+};

@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import InvoicePDF from "../Containers/Invoice/components/InvoicePDF";
+import InvoicePDF from "../containers/Invoice/components/InvoicePDF";
 import useFetchInvoiceDetail from "../hooks/invoice/useFetchInvoiceDetail";
 import { useParams } from "react-router-dom";
 import { sanitizeInvoiceID } from "../utils";

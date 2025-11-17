@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import InvoiceTableCell from "./InvoiceTableCell";
 import useDeleteInvoice from "../../hooks/invoice/useDeleteInvoice";
 import { sanitizeInvoiceID } from "../../utils";
+import EditInvoiceModal from "./components/EditInvoiceModal";
 
 export default function InvoiceTableBodyRow({ record = {}, page = 1, index = 1 }) {
     const naviagtion = useNavigate()
@@ -34,7 +35,11 @@ export default function InvoiceTableBodyRow({ record = {}, page = 1, index = 1 }
         <InvoiceTableCell className="w-40">{invoiceID}</InvoiceTableCell>
 
         {/* Owner */}
-        <InvoiceTableCell className="w-60">{record?.owner.firstName + " " + record?.owner.lastName}</InvoiceTableCell>
+        <InvoiceTableCell className="w-60">
+          {record?.owner 
+            ? `${record.owner.email}`
+            : "نامشخص"}
+        </InvoiceTableCell>
 
         {/* Customer name (full name) */}
         <InvoiceTableCell className="w-60">{record?.customer.name}</InvoiceTableCell>
@@ -50,6 +55,8 @@ export default function InvoiceTableBodyRow({ record = {}, page = 1, index = 1 }
                 <button className="btn-sm btn btn-circle btn-info" onClick={onDownloadClick}>
                     <Download color="#fff" size={18} />
                 </button>
+
+                <EditInvoiceModal id={record.id} />
 
                 <button className="btn-sm btn btn-circle btn-error" onClick={() => onInvoiceDelete(record.id)}>
                     {isDeleting && <LoaderCircle size={18} color="#fff" className="animate-spin" />}

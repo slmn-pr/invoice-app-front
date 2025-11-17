@@ -1,6 +1,6 @@
 import { Loader, LoaderPinwheel } from "lucide-react";
 import AddInvoiceModal from "../containers/Invoice/components/AddInvoiceModal";
-import InvoicesTable from "../Containers/Invoice/Table";
+import InvoicesTable from "../containers/Invoice/Table";
 import useFetchPaginateInvoices from "../hooks/invoice/useFetchPaginateInvoices";
 import PageLayuot from "../layout/PageLayout";
 
