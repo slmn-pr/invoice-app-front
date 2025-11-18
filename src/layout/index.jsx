@@ -4,6 +4,7 @@ import SideMenu from "./components/SideMenu";
 import { useAuthStore } from "../store/authStore";
 import { clearAuthCookies } from "../utils/cookies";
 import { useCallback } from "react";
+import ThemeToggle from "../components/ThemeToggle";
 
 export default function DashboardLayout() {
     const token = useAuthStore((s) => s.token)
@@ -39,23 +40,23 @@ export default function DashboardLayout() {
     // }, [handleLogout]);
 
 
-    return <main className="h-screen w-screen flex">
+    return <main className="h-screen w-screen flex bg-white dark:bg-gray-900">
 
 
-        <aside className="w-60 border-e border-gray-300 h-full">
+        <aside className="w-60 border-e border-gray-300 dark:border-gray-700 h-full bg-white dark:bg-gray-800">
             <SideMenu />
         </aside>
 
-        <div className="w-[calc(100%-15rem)] h-screen overflow-x-hidden overflow-y-hidden">
+        <div className="w-[calc(100%-15rem)] h-screen overflow-x-hidden overflow-y-hidden bg-white dark:bg-gray-900">
             {/* App bar */}
-            <div className="w-full  ">
-                <header className="flex  justify-between items-center border-b border-b-gray-300 p-5 sticky top-0 left-0">
+            <div className="w-full bg-white dark:bg-gray-800">
+                <header className="flex  justify-between items-center border-b border-b-gray-300 dark:border-b-gray-700 p-5 sticky top-0 left-0 bg-white dark:bg-gray-800 z-10">
 
 
                     {/* User info */}
-                    <div className="flex items-center space-x-1 text-gray-500">
+                    <div className="flex items-center space-x-1 text-gray-500 dark:text-gray-300">
 
-                        <div className="size-10 rounded-full border border-gray-400 flex justify-center items-center font-bold text-2xl bg-teal-700 text-white border-none">{String(user.email).at(0)}</div>
+                        <div className="size-10 rounded-full border border-gray-400 dark:border-gray-600 flex justify-center items-center font-bold text-2xl bg-teal-700 text-white border-none">{String(user.email).at(0)}</div>
                         <span className="font-medium text-lg space-x-1">
                             <span className="font-bold">
                                 {user.email}
@@ -65,10 +66,13 @@ export default function DashboardLayout() {
                         </span>
                     </div>
 
-                    {/* Login or signup button */}
-                    {token && <PrimaryButton PrimaryButton onClick={handleLogout}>
-                        خروج
-                    </PrimaryButton>}
+                    {/* Actions */}
+                    <div className="flex items-center gap-2">
+                        <ThemeToggle />
+                        {token && <PrimaryButton PrimaryButton onClick={handleLogout}>
+                            خروج
+                        </PrimaryButton>}
+                    </div>
 
                 </header>
             </div>

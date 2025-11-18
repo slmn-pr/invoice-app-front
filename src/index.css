@@ -28,6 +28,11 @@ html,
 body {
   direction: rtl;
   font-family: Iranyekan, Vazirmatn, sans-serif;
+  background-color: #ffffff;
+}
+
+.dark body {
+  background-color: #111827;
 }
 .form-control {
   @apply space-y-2;

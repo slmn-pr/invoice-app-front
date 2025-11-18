@@ -3,6 +3,7 @@ import daisyui from "daisyui";
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  darkMode: "class", // Enable class-based dark mode
   theme: {
     extend: {
       colors: {
@@ -30,6 +31,8 @@ export default {
           error: "#f87272",
         },
       },
+      "dark",
     ],
+    darkTheme: "dark",
   },
 };

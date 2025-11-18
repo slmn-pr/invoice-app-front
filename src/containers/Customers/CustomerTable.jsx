@@ -10,7 +10,7 @@ export default function InvoicesTable({ records = [], meta = { "total": 0, "page
                 (
                     <th
                         key={`${item}-${index}`}
-                        className=" border border-gray-300 p-2">
+                        className="border border-gray-300 dark:border-gray-700 p-2 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100">
                         {item}
                     </th>
                 ))}

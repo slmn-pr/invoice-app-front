@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getAccessTokenFromCookie, clearAuthCookies } from "../utils/cookies";
+import { useAuthStore } from "../store/authStore";
 
 const API_BASE_URL = "http://localhost:4000/api";
 
@@ -27,8 +28,11 @@ userReq.interceptors.response.use(
     console.log("[userReq.interceptors.response.use] error", error);
 
     if (error.response && error.response.status === 401) {
-      clearAuthCookies();
+      // Clear cookies and zustand store
+      const { logout } = useAuthStore.getState();
+      logout();
 
+      // Redirect to login page
       window.location.replace("/login");
     }
 

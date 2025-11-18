@@ -25,9 +25,9 @@ export default function CustomersPage() {
         } >
 
         {isLoading && <div className="w-full flex flex-col justify-center items-center mt-20">
-            <Loader size={100} className="animate-spin" />
+            <Loader size={100} className="animate-spin text-teal-500 dark:text-teal-400" />
 
-            <span className="text-3xl font-semibold text-gray-500">در حال بارگیری داده ها</span></div>}
+            <span className="text-3xl font-semibold text-gray-500 dark:text-gray-400">در حال بارگیری داده ها</span></div>}
 
 
         {!isLoading && <>

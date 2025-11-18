@@ -18,12 +18,12 @@ export default function InvoicesPage() {
 
     return <PageLayuot
         pageTitle="مدیریت فاکتور ها"
-        buttonSlot={<button onClick={onAddInvoice} className="bg-white text-gray-900 p-3 rounded cursor-pointer">صدور فاکتور جدید</button>} >
+        buttonSlot={<button onClick={onAddInvoice} className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 rounded cursor-pointer border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">صدور فاکتور جدید</button>} >
 
         {isLoading && <div className="w-full flex flex-col justify-center items-center mt-20">
-            <Loader size={100} className="animate-spin" />
+            <Loader size={100} className="animate-spin text-teal-500 dark:text-teal-400" />
 
-            <span className="text-3xl font-semibold text-gray-500">در حال بارگیری داده ها</span></div>}
+            <span className="text-3xl font-semibold text-gray-500 dark:text-gray-400">در حال بارگیری داده ها</span></div>}
 
 
         {!isLoading && <>

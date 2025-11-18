@@ -13,9 +13,9 @@ export default function SideMenu() {
     const location = useLocation()
 
 
-    return <div className="">
+    return <div className="p-5">
 
-        <div className="text-2xl text-teal-500 font-bold">به پنل من خوش آمدید</div>
+        <div className="text-2xl text-teal-500 dark:text-teal-400 font-bold">به پنل من خوش آمدید</div>
         <ul className="mt-20">
             {items.map((item) => (<SideMenuItem key={item.name} item={item} isActive={location.pathname === item.url} />))}
         </ul>
