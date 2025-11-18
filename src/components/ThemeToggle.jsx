@@ -8,7 +8,7 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={() => toggleTheme()}
-      className="btn btn-circle btn-ghost"
+      className="p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
       aria-label="Toggle theme"
       type="button"
     >

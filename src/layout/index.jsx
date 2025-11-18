@@ -1,10 +1,10 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import PrimaryButton from "../components/buttons/PrimaryButton";
 import SideMenu from "./components/SideMenu";
 import { useAuthStore } from "../store/authStore";
 import { clearAuthCookies } from "../utils/cookies";
 import { useCallback } from "react";
 import ThemeToggle from "../components/ThemeToggle";
+import { LogOut, User } from "lucide-react";
 
 export default function DashboardLayout() {
     const token = useAuthStore((s) => s.token)
@@ -13,78 +13,57 @@ export default function DashboardLayout() {
 
     const navigate = useNavigate()
 
-
     const handleLogout = useCallback(() => {
-        console.log("handleLogout click");
-        // Clear from global state
         logout()
-
-        // Clear cookie
         clearAuthCookies()
-
-        // navigate to login
         navigate('/login')
     }, [logout, navigate])
 
+    return (
+        <main className="h-screen w-screen flex bg-gray-50 dark:bg-gray-950 overflow-hidden">
+            {/* Modern Sidebar */}
+            <aside className="w-72 border-l border-gray-200 dark:border-gray-800 h-full bg-white dark:bg-gray-900 flex flex-col">
+                <SideMenu />
+            </aside>
 
-    // Check if cookie edited -> logout
-    // useEffect(() => {
-    //     const unsubscribe = cookies.addChangeListener(() => {
-    //         console.log("cookie change detected → logout");
-    //         handleLogout();
-    //     });
-
-    //     return () => {
-    //         cookies.removeChangeListener(unsubscribe)
-    //     };
-    // }, [handleLogout]);
-
-
-    return <main className="h-screen w-screen flex bg-white dark:bg-gray-900">
-
-
-        <aside className="w-60 border-e border-gray-300 dark:border-gray-700 h-full bg-white dark:bg-gray-800">
-            <SideMenu />
-        </aside>
-
-        <div className="w-[calc(100%-15rem)] h-screen overflow-x-hidden overflow-y-hidden bg-white dark:bg-gray-900">
-            {/* App bar */}
-            <div className="w-full bg-white dark:bg-gray-800">
-                <header className="flex  justify-between items-center border-b border-b-gray-300 dark:border-b-gray-700 p-5 sticky top-0 left-0 bg-white dark:bg-gray-800 z-10">
-
-
-                    {/* User info */}
-                    <div className="flex items-center space-x-1 text-gray-500 dark:text-gray-300">
-
-                        <div className="size-10 rounded-full border border-gray-400 dark:border-gray-600 flex justify-center items-center font-bold text-2xl bg-teal-700 text-white border-none">{String(user.email).at(0)}</div>
-                        <span className="font-medium text-lg space-x-1">
-                            <span className="font-bold">
-                                {user.email}
+            {/* Main Content Area */}
+            <div className="flex-1 flex flex-col overflow-hidden">
+                {/* Modern Header */}
+                <header className="h-16 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800 flex items-center justify-between px-6 sticky top-0 z-50">
+                    <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center text-white font-semibold text-sm shadow-sm">
+                            {String(user?.email || 'U').at(0).toUpperCase()}
+                        </div>
+                        <div className="flex flex-col">
+                            <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                {user?.email || 'کاربر'}
                             </span>
-                            <span>، خوش آمدید</span>
-
-                        </span>
+                            <span className="text-xs text-gray-500 dark:text-gray-400">خوش آمدید</span>
+                        </div>
                     </div>
 
                     {/* Actions */}
                     <div className="flex items-center gap-2">
                         <ThemeToggle />
-                        {token && <PrimaryButton PrimaryButton onClick={handleLogout}>
-                            خروج
-                        </PrimaryButton>}
+                        {token && (
+                            <button
+                                onClick={handleLogout}
+                                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+                            >
+                                <LogOut className="w-4 h-4" />
+                                <span>خروج</span>
+                            </button>
+                        )}
                     </div>
-
                 </header>
+
+                {/* Content Area */}
+                <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-950">
+                    <div className="max-w-7xl mx-auto p-6">
+                        <Outlet />
+                    </div>
+                </div>
             </div>
-
-            {/* Content */}
-            <div className="w-full h-[calc(100%-3rem)] px-5 overflow-y-auto pt-5">
-                <Outlet />
-            </div>
-        </div>
-
-
-
-
-    </main >
+        </main>
+    )
 }
