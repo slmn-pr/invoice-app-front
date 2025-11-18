@@ -11,7 +11,6 @@ export default function EditCustomerModal({ id }) {
 
 
     const { data, isLoading } = useFetchCustomerInfo(enabled, id);
-    console.log("[EditCustomerModal] data:", data);
 
 
     const methods = useForm({
@@ -56,14 +55,19 @@ export default function EditCustomerModal({ id }) {
 
     return <>
         {/* Open the modal using document.getElementById('ID').showModal() method */}
-        <button className="btn" onClick={onOpenModal} disabled={!id}>
-            <SquarePen />
+        <button 
+            className="p-2 text-teal-600 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-900/20 rounded-lg transition-colors"
+            onClick={onOpenModal} 
+            disabled={!id}
+            title="ویرایش"
+        >
+            <SquarePen size={18} />
         </button>
         <dialog id="edit_customer_modal" className="modal" >
 
             <div className="modal-box">
-                <h2 className="text-xl font-bold  mb-4">
-                    افزودن مشتری جدید
+                <h2 className="text-xl font-bold mb-4">
+                    ویرایش مشتری
                 </h2>
                 <FormProvider {...methods}>
                     <AddCustomerForm onSubmit={handleEditCustomer} onClose={onCloseModal} isPending={isPending} />

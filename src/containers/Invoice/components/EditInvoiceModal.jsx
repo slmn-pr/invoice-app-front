@@ -1,10 +1,9 @@
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider } from "react-hook-form";
 import AddInvoiceForm from "./AddInvoiceForm";
 import useFetchInvoiceDetail from "../../../hooks/invoice/useFetchInvoiceDetail";
-import { useMemo, useState, useEffect } from "react";
-import { SquarePen } from "lucide-react";
+import { useState } from "react";
+import { SquarePen, BadgeAlert } from "lucide-react";
 import useEditInvoice from "../../../hooks/invoice/useEditInvoice";
-import { BadgeAlert } from "lucide-react";
 
 export default function EditInvoiceModal({ id }) {
   const [enabled, setEnabled] = useState(false);
@@ -28,8 +27,6 @@ export default function EditInvoiceModal({ id }) {
   const { isPending, mutate, error } = useEditInvoice(id);
 
   function handleEditInvoice(values) {
-
-    console.log("[EditInvoiceModal] values:", values);
     return mutate(values, {
       onSuccess: onCloseModal,
     });
@@ -39,11 +36,12 @@ export default function EditInvoiceModal({ id }) {
     <>
       {/* Open the modal using document.getElementById('ID').showModal() method */}
       <button
-        className="btn-sm btn btn-circle btn-warning"
+        className="p-2 text-teal-600 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-900/20 rounded-lg transition-colors"
         onClick={onOpenModal}
         disabled={!id}
+        title="ویرایش"
       >
-        <SquarePen color="#fff" size={18} />
+        <SquarePen size={18} />
       </button>
       <dialog id={modalId} className="modal">
         <div className="modal-box w-11/12 max-w-5xl">

@@ -1,8 +1,9 @@
-import { Loader, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import AddInvoiceModal from "../containers/Invoice/components/AddInvoiceModal";
 import InvoicesTable from "../containers/Invoice/Table";
 import useFetchPaginateInvoices from "../hooks/invoice/useFetchPaginateInvoices";
 import PageLayuot from "../layout/PageLayout";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function InvoicesPage() {
     const { data, isLoading } = useFetchPaginateInvoices()
@@ -24,16 +25,9 @@ export default function InvoicesPage() {
                 </button>
             }
         >
-            {isLoading && (
-                <div className="w-full flex flex-col justify-center items-center py-20">
-                    <Loader size={48} className="animate-spin text-teal-500 dark:text-teal-400 mb-4" />
-                    <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                        در حال بارگیری داده‌ها...
-                    </span>
-                </div>
-            )}
-
-            {!isLoading && (
+            {isLoading ? (
+                <LoadingSpinner />
+            ) : (
                 <>
                     <InvoicesTable records={data?.items} meta={data?.meta} />
                     <AddInvoiceModal />

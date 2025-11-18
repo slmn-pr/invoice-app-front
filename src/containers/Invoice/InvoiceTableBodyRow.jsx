@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import { Download, LoaderCircle, Trash2 } from "lucide-react";
 import { useMemo } from "react";
-import InvoiceTableCell from "./InvoiceTableCell";
+import TableCell from "../../components/Table/TableCell";
 import useDeleteInvoice from "../../hooks/invoice/useDeleteInvoice";
 import { sanitizeInvoiceID } from "../../utils";
 import EditInvoiceModal from "./components/EditInvoiceModal";
@@ -39,38 +39,38 @@ export default function InvoiceTableBodyRow({ record = {}, page = 1, index = 1 }
     return (
         <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
             {/* Index */}
-            <InvoiceTableCell className="w-20">
+            <TableCell className="w-20">
                 <span className="text-gray-500 dark:text-gray-400 font-medium">{invoiceIndexNumber}</span>
-            </InvoiceTableCell>
+            </TableCell>
 
             {/* Invoice number */}
-            <InvoiceTableCell className="w-40">
+            <TableCell className="w-40">
                 <span className="font-mono text-sm font-medium text-gray-900 dark:text-gray-100">{invoiceID}</span>
-            </InvoiceTableCell>
+            </TableCell>
 
             {/* Owner */}
-            <InvoiceTableCell className="w-60">
+            <TableCell className="w-60">
                 <span className="text-gray-700 dark:text-gray-300 text-sm">
                     {record?.owner?.email || "نامشخص"}
                 </span>
-            </InvoiceTableCell>
+            </TableCell>
 
             {/* Customer name */}
-            <InvoiceTableCell className="w-60">
+            <TableCell className="w-60">
                 <span className="text-gray-900 dark:text-gray-100 font-medium">
                     {record?.customer?.name || "نامشخص"}
                 </span>
-            </InvoiceTableCell>
+            </TableCell>
 
             {/* Status */}
-            <InvoiceTableCell className="w-32">
+            <TableCell className="w-32">
                 <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${getStatusColor(record?.status)}`}>
                     {record?.status || "نامشخص"}
                 </span>
-            </InvoiceTableCell>
+            </TableCell>
 
             {/* Actions */}
-            <InvoiceTableCell className="w-32">
+            <TableCell className="w-32">
                 <div className="flex items-center gap-2 justify-center">
                     <button 
                         onClick={onDownloadClick}
@@ -95,7 +95,7 @@ export default function InvoiceTableBodyRow({ record = {}, page = 1, index = 1 }
                         )}
                     </button>
                 </div>
-            </InvoiceTableCell>
+            </TableCell>
         </tr>
     )
 }

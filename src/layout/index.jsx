@@ -4,7 +4,7 @@ import { useAuthStore } from "../store/authStore";
 import { clearAuthCookies } from "../utils/cookies";
 import { useCallback } from "react";
 import ThemeToggle from "../components/ThemeToggle";
-import { LogOut, User } from "lucide-react";
+import { LogOut } from "lucide-react";
 
 export default function DashboardLayout() {
     const token = useAuthStore((s) => s.token)
