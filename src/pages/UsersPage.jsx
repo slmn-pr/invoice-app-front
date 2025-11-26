@@ -76,6 +76,49 @@ export default function UsersPage({ defaultFilter = "users" }) {
     setSelectedUser(record);
   };
 
+  const customerStats = [
+    {
+      label: "مشتریان کل",
+      value: customerData?.meta?.total ?? 0,
+    },
+    {
+      label: "صفحه فعلی",
+      value: customerData?.meta?.page ?? 1,
+    },
+    {
+      label: "محدودیت هر صفحه",
+      value: customerData?.meta?.limit ?? 0,
+    },
+  ];
+
+  const invoiceStatusCounts = (invoiceData?.items || []).reduce(
+    (acc, invoice) => {
+      const key = invoice.status || "نامشخص";
+      acc[key] = (acc[key] || 0) + 1;
+      return acc;
+    },
+    {}
+  );
+
+  const invoicesStats = [
+    {
+      label: "فاکتورهای کل",
+      value: invoiceData?.meta?.total ?? 0,
+    },
+    {
+      label: "صفحه فعلی",
+      value: invoiceData?.meta?.page ?? 1,
+    },
+    {
+      label: "پرداخت شده",
+      value: invoiceStatusCounts["پرداخت شده"] ?? 0,
+    },
+    {
+      label: "پیش‌نویس",
+      value: invoiceStatusCounts["پیش نویس"] ?? 0,
+    },
+  ];
+
   const managementOptions = [
     {
       id: "users",
@@ -238,6 +281,21 @@ export default function UsersPage({ defaultFilter = "users" }) {
                     {selectedUser?.role || "کاربر"}
                   </span>
                 </div>
+                <div className="grid gap-3 sm:grid-cols-3">
+                  {customerStats.map((stat) => (
+                    <div
+                      key={stat.label}
+                      className="rounded-2xl border border-dashed border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-900/60 p-3 text-center"
+                    >
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        {stat.label}
+                      </p>
+                      <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                        {stat.value}
+                      </p>
+                    </div>
+                  ))}
+                </div>
                 {customerLoading ? (
                   <div className="flex items-center justify-center min-h-[200px]">
                     <LoadingSpinner size={32} message="در حال بارگذاری مشتریان ..." />
@@ -266,6 +324,21 @@ export default function UsersPage({ defaultFilter = "users" }) {
                   <span className="text-xs rounded-full px-3 py-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-200">
                     {selectedUser?.status || "فعال"}
                   </span>
+                </div>
+                <div className="grid gap-3 sm:grid-cols-3">
+                  {invoicesStats.map((stat) => (
+                    <div
+                      key={stat.label}
+                      className="rounded-2xl border border-dashed border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-900/60 p-3 text-center"
+                    >
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        {stat.label}
+                      </p>
+                      <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                        {stat.value}
+                      </p>
+                    </div>
+                  ))}
                 </div>
                 {invoiceLoading ? (
                   <div className="flex items-center justify-center min-h-[200px]">

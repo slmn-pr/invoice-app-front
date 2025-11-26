@@ -22,6 +22,7 @@ export default function LoginPage() {
                 toast.error(error.message)
             },
             onSuccess: (data) => {
+                console.log("[LoginPage] onSuccess, data:", data)
                 saveAuthToken(data.token)
                 login(data)
                 toast.success("ورود با موفقیت انجام شد");
