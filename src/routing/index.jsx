@@ -9,6 +9,7 @@ import LoginPage from "../pages/LoginPage";
 import SignupPage from "../pages/SignupPage";
 import CustomersPage from "../pages/CustomersPage";
 import UsersPage from "../pages/UsersPage";
+import AdminsPage from "../pages/AdminsPage";
 
 const router = createBrowserRouter([
 
@@ -41,11 +42,11 @@ const router = createBrowserRouter([
                     },
                     {
                         path: "users",
-                        element: <UsersPage defaultFilter="users" />,
+                        element: <UsersPage />,
                     },
                     {
                         path: "users/admins",
-                        element: <UsersPage defaultFilter="admins" />,
+                        element: <AdminsPage />,
                     },
 
                     // 404
