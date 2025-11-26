@@ -11,8 +11,8 @@ import userReq from "./axios-config";
 //   total: 10,
 // };
 
-export const getAllInvoices = () => {
-  return userReq.get("/invoices?page=1&limit=10");
+export const getAllInvoices = (params = { page: 1, limit: 10 }) => {
+  return userReq.get("/invoices", { params });
 };
 
 export const insertInvoice = (invoice = {}) => {

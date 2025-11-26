@@ -8,6 +8,7 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import LoginPage from "../pages/LoginPage";
 import SignupPage from "../pages/SignupPage";
 import CustomersPage from "../pages/CustomersPage";
+import UsersPage from "../pages/UsersPage";
 
 const router = createBrowserRouter([
 
@@ -36,7 +37,15 @@ const router = createBrowserRouter([
 
                     // Customer
                     {
-                        path: 'customers', element: <CustomersPage />
+                        path: "customers", element: <CustomersPage />
+                    },
+                    {
+                        path: "users",
+                        element: <UsersPage defaultFilter="users" />,
+                    },
+                    {
+                        path: "users/admins",
+                        element: <UsersPage defaultFilter="admins" />,
                     },
 
                     // 404

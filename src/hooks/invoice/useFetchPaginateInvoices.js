@@ -13,7 +13,7 @@ export default function useFetchPaginateInvoices(
 ) {
   async function fetchInvoices() {
     try {
-      const { data } = await getAllInvoices();
+      const { data } = await getAllInvoices(apiPayload);
 
       if (data?.success) {
         return {
