@@ -82,3 +82,184 @@ body {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
+
+/* React Multi Date Picker Styling */
+.rmdp-wrapper {
+  width: 100% !important;
+}
+
+.rmdp-input {
+  width: 100% !important;
+  padding: 0.625rem 1rem !important;
+  border-radius: 0.75rem !important;
+  border: 1px solid #d1d5db !important;
+  background-color: white !important;
+  color: #111827 !important;
+  font-size: 0.875rem !important;
+  text-align: center !important;
+  direction: rtl !important;
+  transition: all 0.2s ease !important;
+}
+
+.dark .rmdp-input {
+  background-color: #1f2937 !important;
+  border-color: #374151 !important;
+  color: #f9fafb !important;
+}
+
+.rmdp-input:focus {
+  outline: none !important;
+  border-color: #14b8a6 !important;
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1) !important;
+}
+
+.rmdp-calendar {
+  background-color: white !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+  padding: 1.5rem !important;
+  direction: rtl !important;
+  border: 1px solid #e5e7eb !important;
+}
+
+.dark .rmdp-calendar {
+  background-color: #1f2937 !important;
+  color: #f9fafb !important;
+  border-color: #374151 !important;
+}
+
+/* Header styling */
+.rmdp-header {
+  margin-bottom: 1.5rem !important;
+  padding-bottom: 1rem !important;
+  border-bottom: 1px solid #e5e7eb !important;
+}
+
+.dark .rmdp-header {
+  border-bottom-color: #374151 !important;
+}
+
+.rmdp-header-values {
+  color: #111827 !important;
+  font-weight: 700 !important;
+  font-size: 1.125rem !important;
+  text-align: center !important;
+}
+
+.dark .rmdp-header-values {
+  color: #f9fafb !important;
+}
+
+/* Week days styling */
+.rmdp-week-day {
+  color: #6b7280 !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  text-align: center !important;
+  padding: 0.5rem 0 !important;
+}
+
+.dark .rmdp-week-day {
+  color: #9ca3af !important;
+}
+
+/* Day cells styling */
+.rmdp-day {
+  text-align: center !important;
+}
+
+.rmdp-day span {
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 0.5rem !important;
+  transition: all 0.2s ease !important;
+  font-weight: 500 !important;
+}
+
+.rmdp-day.rmdp-selected span:not(.highlight) {
+  background-color: #14b8a6 !important;
+  box-shadow: 0 4px 6px -1px rgba(20, 184, 166, 0.3) !important;
+  color: white !important;
+  font-weight: 600 !important;
+}
+
+.rmdp-day.rmdp-selected span:not(.highlight):hover {
+  background-color: #0d9488 !important;
+  transform: scale(1.05) !important;
+}
+
+.rmdp-day:not(.rmdp-disabled):not(.rmdp-day-hidden):not(.rmdp-selected) span:hover {
+  background-color: #ccfbf1 !important;
+  color: #0f766e !important;
+  transform: scale(1.05) !important;
+}
+
+.dark .rmdp-day:not(.rmdp-disabled):not(.rmdp-day-hidden):not(.rmdp-selected) span:hover {
+  background-color: #134e4a !important;
+  color: #5eead4 !important;
+}
+
+.rmdp-day.rmdp-today span {
+  background-color: #f0fdfa !important;
+  color: #0f766e !important;
+  font-weight: 600 !important;
+  border: 2px solid #14b8a6 !important;
+}
+
+.dark .rmdp-day.rmdp-today span {
+  background-color: #134e4a !important;
+  color: #5eead4 !important;
+  border-color: #5eead4 !important;
+}
+
+/* Arrow buttons */
+.rmdp-arrow-container {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.rmdp-arrow {
+  border-color: #6b7280 !important;
+  width: 0.5rem !important;
+  height: 0.5rem !important;
+  transition: all 0.2s ease !important;
+}
+
+.rmdp-arrow:hover {
+  border-color: #14b8a6 !important;
+  box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.2) !important;
+  transform: scale(1.2) !important;
+}
+
+.dark .rmdp-arrow {
+  border-color: #9ca3af !important;
+}
+
+.dark .rmdp-arrow:hover {
+  border-color: #5eead4 !important;
+}
+
+/* Remove extra elements */
+.rmdp-day-picker {
+  padding: 0 !important;
+}
+
+.rmdp-month-picker,
+.rmdp-year-picker {
+  padding: 0 !important;
+}
+
+/* Disabled days */
+.rmdp-day.rmdp-disabled span {
+  color: #d1d5db !important;
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+}
+
+.dark .rmdp-day.rmdp-disabled span {
+  color: #4b5563 !important;
+}

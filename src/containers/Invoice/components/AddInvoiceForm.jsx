@@ -2,9 +2,38 @@ import React, { useEffect } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import InvoiceItemsTable from "./InvoiceItemsTable";
 import SelectCustomerInput from "./form/SelectCustomerInput";
+import JalaliDatePicker from "../../../components/JalaliDatePicker";
+
+// Convert Persian/Farsi digits to English digits
+const persianToEnglish = (str) => {
+    const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+    const englishDigits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    
+    return str.replace(/[۰-۹]/g, (char) => {
+        const index = persianDigits.indexOf(char);
+        return index !== -1 ? englishDigits[index] : char;
+    });
+};
+
+// Get today's date in Jalali format (YYYY/MM/DD)
+const getTodayJalaliDate = () => {
+    const persianDate = new Date().toLocaleDateString("fa-IR");
+    const englishDate = persianToEnglish(persianDate);
+    
+    // Format: Convert from "Y/M/D" to "YYYY/MM/DD"
+    const parts = englishDate.split('/');
+    if (parts.length === 3) {
+        const year = parts[0];
+        const month = String(parts[1]).padStart(2, '0');
+        const day = String(parts[2]).padStart(2, '0');
+        return `${year}/${month}/${day}`;
+    }
+    
+    return englishDate;
+};
 
 export default function AddInvoiceForm({ onSubmit, onClose, isPending = false, submitText, defaultValues ={
-    issueDate: "",
+    issueDate: getTodayJalaliDate(),
     dueDate: "",
     customerId: "",
     status: "پیش‌نویس",
@@ -68,10 +97,10 @@ export default function AddInvoiceForm({ onSubmit, onClose, isPending = false, s
                         <label className="label justify-end">
                             <span className="label-text text-gray-700">تاریخ صدور</span>
                         </label>
-                        <input
-                            type="date"
-                            {...register("issueDate", { required: true })}
-                            className="input input-bordered w-full text-right"
+                        <JalaliDatePicker
+                            name="issueDate"
+                            required={true}
+                            placeholder="انتخاب تاریخ صدور"
                         />
                     </div>
 
@@ -81,10 +110,10 @@ export default function AddInvoiceForm({ onSubmit, onClose, isPending = false, s
                         <label className="label justify-end">
                             <span className="label-text text-gray-700">تاریخ سررسید</span>
                         </label>
-                        <input
-                            type="date"
-                            {...register("dueDate", { required: true })}
-                            className="input input-bordered w-full text-right"
+                        <JalaliDatePicker
+                            name="dueDate"
+                            required={true}
+                            placeholder="انتخاب تاریخ سررسید"
                         />
                     </div>
                 </div>

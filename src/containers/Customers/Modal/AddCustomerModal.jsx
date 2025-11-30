@@ -2,7 +2,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import AddCustomerForm from "../components/AddCustomerForm";
 import useInsertCustomer from "../../../hooks/customer/useInsertCustomer";
 
-export default function AddCustomerModal({ buttonContent = "Open modal" }) {
+export default function AddCustomerModal() {
 
     const methods = useForm({
         defaultValues: {
@@ -30,8 +30,6 @@ export default function AddCustomerModal({ buttonContent = "Open modal" }) {
     }
 
     return <>
-        {/* Open the modal using document.getElementById('ID').showModal() method */}
-        <button className="btn" onClick={() => document.getElementById('add_customer_modal').showModal()}>{buttonContent}</button>
         <dialog id="add_customer_modal" className="modal" >
 
             <div className="modal-box">

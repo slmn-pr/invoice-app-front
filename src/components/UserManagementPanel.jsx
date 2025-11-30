@@ -66,12 +66,14 @@ export default function UserManagementPanel({
 
   const [activeFilter, setActiveFilter] = useState(defaultFilter);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [activeSection, setActiveSection] = useState(null); // 'customers' | 'invoices' | null
   const customersSectionRef = useRef(null);
   const invoicesSectionRef = useRef(null);
 
   useEffect(() => {
     setActiveFilter(defaultFilter);
     setSelectedUser(null);
+    setActiveSection(null);
   }, [defaultFilter]);
 
   const scrollToSection = useCallback((section) => {
@@ -106,10 +108,20 @@ export default function UserManagementPanel({
 
   const handleViewCustomers = (record) => {
     setSelectedUser(record);
+    setActiveSection("customers");
+    // Scroll to customers section after a brief delay to ensure it's rendered
+    setTimeout(() => {
+      scrollToSection("customers");
+    }, 100);
   };
 
   const handleViewInvoices = (record) => {
     setSelectedUser(record);
+    setActiveSection("invoices");
+    // Scroll to invoices section after a brief delay to ensure it's rendered
+    setTimeout(() => {
+      scrollToSection("invoices");
+    }, 100);
   };
 
   const customerStats = [
@@ -255,99 +267,123 @@ export default function UserManagementPanel({
         <div className="space-y-6">
           {selectedUser ? (
             <>
-              <div
-                ref={customersSectionRef}
-                className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-6 space-y-4"
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                      مشتریان متعلق به
-                    </p>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                      {selectedUser?.email}
-                    </h3>
-                  </div>
-                  <span className="text-xs rounded-full px-3 py-1 bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-200">
-                    {selectedUser?.role || "کاربر"}
-                  </span>
-                </div>
-                <div className="grid gap-3 sm:grid-cols-3">
-                  {customerStats.map((stat) => (
-                    <div
-                      key={stat.label}
-                      className="rounded-2xl border border-dashed border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-900/60 p-3 text-center"
-                    >
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        {stat.label}
+              {/* Customers Section - Only show when activeSection is 'customers' */}
+              {activeSection === "customers" && (
+                <div
+                  ref={customersSectionRef}
+                  className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-6 space-y-4"
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        مشتریان متعلق به
                       </p>
-                      <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                        {stat.value}
-                      </p>
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                        {selectedUser?.email}
+                      </h3>
                     </div>
-                  ))}
-                </div>
-                {customerLoading ? (
-                  <div className="flex items-center justify-center min-h-[200px]">
-                    <LoadingSpinner
-                      size={32}
-                      message="در حال بارگذاری مشتریان ..."
-                    />
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setActiveSection("invoices")}
+                        className="px-3 py-1 rounded-lg text-xs font-medium text-blue-600 dark:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/40 transition-colors"
+                      >
+                        مشاهده فاکتورها
+                      </button>
+                      <span className="text-xs rounded-full px-3 py-1 bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-200">
+                        {selectedUser?.role || "کاربر"}
+                      </span>
+                    </div>
                   </div>
-                ) : (
-                  <CustomersTable
-                    records={customerData?.items || []}
-                    meta={customerData?.meta}
-                  />
-                )}
-              </div>
+                  <div className="grid gap-3 sm:grid-cols-3">
+                    {customerStats.map((stat) => (
+                      <div
+                        key={stat.label}
+                        className="rounded-2xl border border-dashed border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-900/60 p-3 text-center"
+                      >
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          {stat.label}
+                        </p>
+                        <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                          {stat.value}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                  {customerLoading ? (
+                    <div className="flex items-center justify-center min-h-[200px]">
+                      <LoadingSpinner
+                        size={32}
+                        message="در حال بارگذاری مشتریان ..."
+                      />
+                    </div>
+                  ) : (
+                    <CustomersTable
+                      records={customerData?.items || []}
+                      meta={customerData?.meta}
+                    />
+                  )}
+                </div>
+              )}
 
-              <div
-                ref={invoicesSectionRef}
-                className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-6 space-y-4"
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                      فاکتورهای کاربر
-                    </p>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                      {selectedUser?.email}
-                    </h3>
-                  </div>
-                  <span className="text-xs rounded-full px-3 py-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-200">
-                    {selectedUser?.status || "فعال"}
-                  </span>
-                </div>
-                <div className="grid gap-3 sm:grid-cols-3">
-                  {invoicesStats.map((stat) => (
-                    <div
-                      key={stat.label}
-                      className="rounded-2xl border border-dashed border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-900/60 p-3 text-center"
-                    >
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        {stat.label}
+              {/* Invoices Section - Only show when activeSection is 'invoices' */}
+              {activeSection === "invoices" && (
+                <div
+                  ref={invoicesSectionRef}
+                  className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-6 space-y-4"
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        فاکتورهای کاربر
                       </p>
-                      <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                        {stat.value}
-                      </p>
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                        {selectedUser?.email}
+                      </h3>
                     </div>
-                  ))}
-                </div>
-                {invoiceLoading ? (
-                  <div className="flex items-center justify-center min-h-[200px]">
-                    <LoadingSpinner
-                      size={32}
-                      message="در حال بارگذاری فاکتورها ..."
-                    />
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setActiveSection("customers")}
+                        className="px-3 py-1 rounded-lg text-xs font-medium text-teal-600 dark:text-teal-300 hover:bg-teal-50 dark:hover:bg-teal-900/40 transition-colors"
+                      >
+                        مشاهده مشتریان
+                      </button>
+                      <span className="text-xs rounded-full px-3 py-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-200">
+                        {selectedUser?.status || "فعال"}
+                      </span>
+                    </div>
                   </div>
-                ) : (
-                  <InvoicesTable
-                    records={invoiceData?.items || []}
-                    meta={invoiceData?.meta}
-                  />
-                )}
-              </div>
+                  <div className="grid gap-3 sm:grid-cols-3">
+                    {invoicesStats.map((stat) => (
+                      <div
+                        key={stat.label}
+                        className="rounded-2xl border border-dashed border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-900/60 p-3 text-center"
+                      >
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          {stat.label}
+                        </p>
+                        <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                          {stat.value}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                  {invoiceLoading ? (
+                    <div className="flex items-center justify-center min-h-[200px]">
+                      <LoadingSpinner
+                        size={32}
+                        message="در حال بارگذاری فاکتورها ..."
+                      />
+                    </div>
+                  ) : (
+                    <InvoicesTable
+                      records={invoiceData?.items || []}
+                      meta={invoiceData?.meta}
+                    />
+                  )}
+                </div>
+              )}
             </>
           ) : (
             <div className="bg-gray-50 dark:bg-gray-900/60 rounded-2xl border border-dashed border-gray-300 dark:border-gray-700 px-6 py-12 text-center text-sm text-gray-500 dark:text-gray-400">
