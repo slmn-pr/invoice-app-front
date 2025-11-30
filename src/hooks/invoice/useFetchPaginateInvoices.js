@@ -1,16 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
 import { getAllInvoices } from "../../api/invoices";
+import { useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
 
-const INITIAL_API_PAYLOAD = {
-  page: 1,
-  limit: 10,
-  customerId: undefined,
-};
+const DEFAULT_LIMIT = 10;
 
-export default function useFetchPaginateInvoices(
-  apiPayload = INITIAL_API_PAYLOAD
-) {
+export default function useFetchPaginateInvoices() {
+  const [searchParams] = useSearchParams();
+
+  const page = searchParams.get("page") ? +searchParams.get("page") : 1;
+  const limit = searchParams.get("limit") ? +searchParams.get("limit") : DEFAULT_LIMIT;
+
+  const apiPayload = {
+    page,
+    limit,
+  };
+
   async function fetchInvoices() {
     try {
       const { data } = await getAllInvoices(apiPayload);
@@ -21,7 +26,7 @@ export default function useFetchPaginateInvoices(
           meta: data.data.meta,
         };
       } else {
-        toast.error(data.data.error);
+        toast.error(data.data.error || "خطا در دریافت فاکتورها");
         return {
           items: [],
           meta: {},
@@ -30,6 +35,10 @@ export default function useFetchPaginateInvoices(
     } catch (error) {
       toast.error("بارگیری فاکتور ها با خطا مواجه شد");
       console.error("[useFetchPaginateInvoices] error: ", error);
+      return {
+        items: [],
+        meta: {},
+      };
     }
   }
 

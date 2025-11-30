@@ -1,16 +1,28 @@
 import { Plus } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
 import AddInvoiceModal from "../containers/Invoice/components/AddInvoiceModal";
 import InvoicesTable from "../containers/Invoice/Table";
 import useFetchPaginateInvoices from "../hooks/invoice/useFetchPaginateInvoices";
 import PageLayuot from "../layout/PageLayout";
 import LoadingSpinner from "../components/LoadingSpinner";
+import Pagination from "../components/Pagination";
 
 export default function InvoicesPage() {
-    const { data, isLoading } = useFetchPaginateInvoices()
+    const [searchParams, setSearchParams] = useSearchParams();
+    const { data, isLoading } = useFetchPaginateInvoices();
 
     const onAddInvoice = () => {
         document.getElementById('add_invoice_modal').showModal()
     }
+
+    const handlePageChange = (newPage) => {
+        const newParams = new URLSearchParams(searchParams);
+        newParams.set("page", newPage.toString());
+        setSearchParams(newParams);
+        
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    };
 
     return (
         <PageLayuot
@@ -29,7 +41,11 @@ export default function InvoicesPage() {
                 <LoadingSpinner />
             ) : (
                 <>
-                    <InvoicesTable records={data?.items} meta={data?.meta} />
+                    <InvoicesTable records={data?.items || []} meta={data?.meta || {}} />
+                    <Pagination
+                        meta={data?.meta}
+                        onPageChange={handlePageChange}
+                    />
                     <AddInvoiceModal />
                 </>
             )}
