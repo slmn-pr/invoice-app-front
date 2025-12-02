@@ -2,14 +2,17 @@ import { Outlet, useNavigate } from "react-router-dom";
 import SideMenu from "./components/SideMenu";
 import { useAuthStore } from "../store/authStore";
 import { clearAuthCookies } from "../utils/cookies";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import ThemeToggle from "../components/ThemeToggle";
-import { LogOut } from "lucide-react";
+import { LogOut, HelpCircle } from "lucide-react";
+import HelpModal from "../components/HelpModal";
+import useKeyboardShortcuts from "../hooks/useKeyboardShortcuts";
 
 export default function DashboardLayout() {
     const token = useAuthStore((s) => s.token)
     const logout = useAuthStore((s) => s.logout)
     const user = useAuthStore((s) => s.user)
+    const [isHelpOpen, setIsHelpOpen] = useState(false)
 
     const navigate = useNavigate()
 
@@ -18,6 +21,17 @@ export default function DashboardLayout() {
         clearAuthCookies()
         navigate('/login')
     }, [logout, navigate])
+
+    const handleOpenHelp = useCallback(() => {
+        setIsHelpOpen(true)
+    }, [])
+
+    const handleCloseHelp = useCallback(() => {
+        setIsHelpOpen(false)
+    }, [])
+
+    // Initialize keyboard shortcuts
+    useKeyboardShortcuts(handleOpenHelp)
 
     return (
         <main className="h-screen w-screen flex bg-gray-50 dark:bg-gray-950 overflow-hidden">
@@ -44,6 +58,17 @@ export default function DashboardLayout() {
 
                     {/* Actions */}
                     <div className="flex items-center gap-2">
+                        <button
+                            onClick={handleOpenHelp}
+                            className="relative p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group"
+                            aria-label="راهنما"
+                            title="راهنما (Ctrl+?)"
+                        >
+                            <HelpCircle className="w-5 h-5" />
+                            <span className="absolute -top-1 -right-1 text-[0.65rem] font-semibold px-1.5 py-0.5 rounded bg-teal-100 dark:bg-teal-900 text-teal-700 dark:text-teal-300 opacity-0 group-hover:opacity-100 transition-opacity">
+                                ?
+                            </span>
+                        </button>
                         <ThemeToggle />
                         {token && (
                             <button
@@ -64,6 +89,9 @@ export default function DashboardLayout() {
                     </div>
                 </div>
             </div>
+
+            {/* Help Modal */}
+            <HelpModal isOpen={isHelpOpen} onClose={handleCloseHelp} />
         </main>
     )
 }
